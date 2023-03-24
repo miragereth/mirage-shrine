@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.8.2",
+    "@reality.eth/contracts": "^3.0.26"
+  }
+}
