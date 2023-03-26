@@ -1,22 +1,102 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import {
   createHashRouter,
   createRoutesFromElements,
+  NavLink,
   Route,
   RouterProvider,
   useNavigate,
+  Outlet,
 } from "react-router-dom"
 import { useNetwork, useProvider } from "wagmi"
 import { Home } from "./pages/Home"
 import { ProphecyPage } from "./pages/ProphecyDetail"
 import { ScryPage } from "./pages/Scry"
+import { ReactSVG } from "react-svg"
 
-const Wrap: React.FC<{ children: JSX.Element }> = (p) => {
+const Navbar: React.FC = (p) => {
+  const network = useNetwork()
+  const [darkMode, setDarkMode] = useState<boolean>()
+
+  const darkModeRefresh = () => {
+    // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.classList.add("dark")
+      localStorage.theme = "dark"
+      setDarkMode(true)
+    } else {
+      document.documentElement.classList.remove("dark")
+      localStorage.theme = "light"
+      setDarkMode(false)
+    }
+  }
+
+  const darkModeToggle = () => {
+    if (localStorage.theme === "dark") {
+      localStorage.theme = "light"
+    } else {
+      localStorage.theme = "dark"
+    }
+    darkModeRefresh()
+  }
+
+  useEffect(() => {
+    darkModeRefresh()
+  }, [])
+
+  return (
+    // Navbar
+    <div className="fixed z-50 flex w-full flex-row items-center justify-between p-5">
+      <div className="flex flex-row items-center">
+        <ReactSVG className="mr-5 h-8 w-8 hover:animate-spin hover:animation-linear hover:animation-continue" src="../assets/yy.svg" />
+        <nav className="flex flex-row items-center">
+          <NavLink
+            className={({ isActive }) =>
+              `w-32 py-1 px-4 font-bold ${isActive ? "" : "opacity-60"}`
+            }
+            to={`chain/${network.chain?.id}`}
+            end
+          >
+            Prophecies
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              `py-1 px-4 font-bold ${isActive ? "" : "opacity-60"}`
+            }
+            to={`chain/${network.chain?.id}/scry`}
+          >
+            Scry
+          </NavLink>
+        </nav>
+      </div>
+      <div className="flex flex-row items-center">
+        <button
+          onClick={() => {
+            darkModeToggle()
+          }}
+          className="px-4 py-1"
+        >
+          {darkMode ? "🔆" : "🌙"}
+        </button>
+        <ConnectButton />
+      </div>
+    </div>
+  )
+}
+
+// https://reactrouter.com/en/6.9.0/components/outlet
+const Layout: React.FC = (p) => {
   return (
     <div>
-      <ConnectButton />
-      {p.children}
+      <Navbar />
+      <div className="items-center py-20">
+        <Outlet />
+      </div>
     </div>
   )
 }
@@ -34,7 +114,7 @@ const Redirect: React.FC = () => {
 
 const router = createHashRouter(
   createRoutesFromElements(
-    <Route path="/">
+    <Route path="/" element={<Layout />}>
       <Route path="chain">
         <Route path=":chainId">
           <Route path="prophecy">
@@ -49,23 +129,8 @@ const router = createHashRouter(
   )
 )
 
-const ConnectedApp = () => {
-  const network = useNetwork()
-  const provider = useProvider()
-
-  if (network.chain === undefined) {
-    return <div>Please connect first</div>
-  }
-
+const App: React.FC = () => {
   return <RouterProvider router={router} />
-}
-
-const App = () => {
-  return (
-    <Wrap>
-      <ConnectedApp />
-    </Wrap>
-  )
 }
 
 export default App

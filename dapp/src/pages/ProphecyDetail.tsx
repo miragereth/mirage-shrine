@@ -11,7 +11,7 @@ import { useAccount, useSigner } from "wagmi"
 import { MirageShrineABI } from "../utils/abis"
 import { getAllProphecies, Prophecy } from "../utils/get-prophecy"
 import { yellowPages } from "../utils/yellow-pages"
-import { CalendarFrame, Inquiry, OddsDisplay, TokenDisplay } from "./Home"
+import { CalendarFrame, Inquiry, OddsDisplay, TokenDisplay } from "../components/ProphecyCard"
 import useSWR from "swr"
 import { getProphecyBalances } from "../utils/get-balance"
 import { BigNumber, constants, ethers } from "ethers"
@@ -335,7 +335,7 @@ export const ProphecyPage: React.FC = (p) => {
       {" "}
       <Link
         to={`/chain/${chainId}`}
-        className="block w-full bg-green-300 py-2 px-4 text-center font-bold rounded hover:border hover:border-green-700"
+        className="block box-content w-full bg-green-300 py-2 px-4 text-center font-bold rounded hover:border hover:border-green-700"
       >
         Return
       </Link>{" "}

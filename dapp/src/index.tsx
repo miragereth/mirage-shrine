@@ -38,13 +38,18 @@ const wagmiClient = createClient({
   provider,
 })
 
+// todo darkmode useContext
+// https://react.dev/reference/react/useContext
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <WagmiConfig client={wagmiClient}>
-      <RainbowKitProvider theme={darkTheme()} chains={chains}>
+      <RainbowKitProvider
+        theme={localStorage.theme === "dark" ? darkTheme() : undefined}
+        chains={chains}
+      >
         <SWRConfig
           value={{
-            revalidateOnFocus: true,
+            revalidateOnFocus: false,
             refreshWhenHidden: false,
             revalidateOnMount: true,
             revalidateIfStale: false,

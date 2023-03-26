@@ -8,14 +8,16 @@ import { yellowPages } from "./yellow-pages"
 export enum Aura {
   Forthcoming,
   Blighted,
-  Reality,
+  Fulfilled,
   Mirage,
+  Entranced,
 }
 
 export interface Prophecy {
   prophecyId: number
   scryTxHash: string
   rune: string
+  createdAt: Date
   horizon: Date
   inquiry: string
   inquiryId: `0x${string}`
@@ -73,12 +75,25 @@ export const getProphecy = async (p: {
     null
   )
 
-  const inquiryPromise = reality
+  const inquiryPromise: Promise<[string, BigNumber]> = reality
     .queryFilter(inquiryFilter, 8695890)
     .then((logs) => {
       const onlyQuestion = logs[0].args as any
-      return onlyQuestion.question as string
+      return [
+        onlyQuestion.question as string,
+        onlyQuestion.created as BigNumber,
+      ]
     })
+
+  const inquiryResultPromise = async () => {
+    let result
+    try {
+      result = await reality.resultFor(got.inquiryId)
+    } catch (e) {
+      result = null
+    }
+    return result
+  }
 
   const runeBytesPromise = fate.info().then((info) => info[0])
 
@@ -116,12 +131,13 @@ export const getProphecy = async (p: {
   })
 
   const [
-    inquiry,
+    [inquiry, createdAt],
     runeBytes,
     essenceSymbol,
     essenceDecimals,
     scryTxHash,
     uniswapInfo,
+    inquiryResult,
   ] = await Promise.all([
     inquiryPromise,
     runeBytesPromise,
@@ -129,9 +145,31 @@ export const getProphecy = async (p: {
     essenceDecimalsPromise(),
     scryTxHashPromise,
     uniswapInfoPromise,
+    inquiryResultPromise(),
   ])
 
   const rune = bytes23ToString(runeBytes)
+
+  let aura = [Aura.Forthcoming, Aura.Blighted, Aura.Fulfilled, Aura.Mirage][
+    got.aura
+  ]
+
+  if (aura === Aura.Forthcoming) {
+    // There is a reality result
+    if (inquiryResult !== null) {
+      console.log({inquiryResult})
+      if (BigNumber.from(inquiryResult).eq(BigNumber.from(0))) {
+        aura = Aura.Mirage
+      } else if (BigNumber.from(inquiryResult).eq(BigNumber.from(1))) {
+        aura = Aura.Fulfilled
+      } else {
+        aura = Aura.Blighted
+      }
+    } else if (new Date().getTime() > got.horizon * 1000) {
+      // Over the horizon
+      aura = Aura.Entranced
+    }
+  }
 
   const prophecy: Prophecy = {
     prophecyId: p.prophecyId,
@@ -141,7 +179,8 @@ export const getProphecy = async (p: {
     essenceSymbol,
     essenceDecimals,
     horizon: new Date(got.horizon * 1000),
-    aura: got.aura,
+    createdAt: new Date(createdAt.toNumber() * 1000),
+    aura: aura,
     no: got.no,
     yes: got.yes,
     fateSupply: got.fateSupply,

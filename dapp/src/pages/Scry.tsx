@@ -106,12 +106,6 @@ export const ScryPage: React.FC = () => {
   const network = getNetwork()
   return (
     <div>
-      <Link
-        to={`/chain/${network.chain?.id}`}
-        className="block w-full bg-green-300 py-2 px-4 text-center font-bold rounded hover:border hover:border-green-700"
-      >
-        Return
-      </Link>
       <ScryForm />
     </div>
   )
