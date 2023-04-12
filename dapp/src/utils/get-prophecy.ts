@@ -54,14 +54,6 @@ export const getProphecy = async (p: {
     signerOrProvider: p.provider,
   })
 
-  const scryFilter = shrine.filters.Scry(BigNumber.from(p.prophecyId), null)
-
-  const scryTxHashPromise = shrine
-    .queryFilter(scryFilter, 8695890)
-    .then((logs) => {
-      return logs[0].transactionHash // It would be convenient for logs to bring their time.
-    })
-
   const inquiryFilter = reality.filters.LogNewQuestion(
     got.inquiryId,
     null,
@@ -75,11 +67,13 @@ export const getProphecy = async (p: {
     null
   )
 
-  const inquiryPromise: Promise<[string, BigNumber]> = reality
+  const inquiryPromise: Promise<[string, string, BigNumber]> = reality
     .queryFilter(inquiryFilter, 8695890)
     .then((logs) => {
       const onlyQuestion = logs[0].args as any
+      const txHash = logs[0].transactionHash
       return [
+        txHash,
         onlyQuestion.question as string,
         onlyQuestion.created as BigNumber,
       ]
@@ -131,11 +125,10 @@ export const getProphecy = async (p: {
   })
 
   const [
-    [inquiry, createdAt],
+    [scryTxHash, inquiry, createdAt],
     runeBytes,
     essenceSymbol,
     essenceDecimals,
-    scryTxHash,
     uniswapInfo,
     inquiryResult,
   ] = await Promise.all([
@@ -143,7 +136,6 @@ export const getProphecy = async (p: {
     runeBytesPromise,
     essenceSymbolPromise(),
     essenceDecimalsPromise(),
-    scryTxHashPromise,
     uniswapInfoPromise,
     inquiryResultPromise(),
   ])
