@@ -8,6 +8,7 @@ import {
   RouterProvider,
   useNavigate,
   Outlet,
+  useParams,
 } from "react-router-dom"
 import { useNetwork, useProvider } from "wagmi"
 import { Home } from "./pages/Home"
@@ -16,7 +17,7 @@ import { ScryPage } from "./pages/Scry"
 import { ReactSVG } from "react-svg"
 
 const Navbar: React.FC = (p) => {
-  const network = useNetwork()
+  const { chainId } = useParams()
   const [darkMode, setDarkMode] = useState<boolean>()
 
   const darkModeRefresh = () => {
@@ -51,15 +52,18 @@ const Navbar: React.FC = (p) => {
 
   return (
     // Navbar
-    <div className="fixed z-50 flex w-full flex-row items-center justify-between p-5">
+    <div className="fixed z-50 flex w-full flex-row items-center justify-between bg-orange-100 bg-opacity-80 p-5 dark:bg-slate-700 dark:bg-opacity-80">
       <div className="flex flex-row items-center">
-        <ReactSVG className="mr-5 h-8 w-8 hover:animate-spin hover:animation-linear hover:animation-continue" src="../assets/yy.svg" />
+        <ReactSVG
+          className="hover:animation-linear hover:animation-continue mr-5 h-8 w-8 hover:animate-spin"
+          src="../assets/yy.svg"
+        />
         <nav className="flex flex-row items-center">
           <NavLink
             className={({ isActive }) =>
               `w-32 py-1 px-4 font-bold ${isActive ? "" : "opacity-60"}`
             }
-            to={`chain/${network.chain?.id}`}
+            to={`chain/${chainId}`}
             end
           >
             Prophecies
@@ -68,7 +72,7 @@ const Navbar: React.FC = (p) => {
             className={({ isActive }) =>
               `py-1 px-4 font-bold ${isActive ? "" : "opacity-60"}`
             }
-            to={`chain/${network.chain?.id}/scry`}
+            to={`chain/${chainId}/scry`}
           >
             Scry
           </NavLink>
@@ -81,7 +85,7 @@ const Navbar: React.FC = (p) => {
           }}
           className="px-4 py-1"
         >
-          {darkMode ? "🔆" : "🌙"}
+          {darkMode ? "🔆" : "🌚"}
         </button>
         <ConnectButton />
       </div>
@@ -94,7 +98,7 @@ const Layout: React.FC = (p) => {
   return (
     <div>
       <Navbar />
-      <div className="items-center py-20">
+      <div className="flex flex-col items-center py-20">
         <Outlet />
       </div>
     </div>

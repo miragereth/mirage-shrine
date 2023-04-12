@@ -130,7 +130,7 @@ contract MirageShrine {
         prophecy.fateSupply -= _amount;
     }
 
-    function ascend(uint64 _prophecy, address _ascender) external {
+    function ascend(uint64 _prophecy) external {
         Prophecy storage prophecy = prophecies[_prophecy];
         if (prophecy.aura == Aura.Forthcoming) {
             // If truth has not arrived, halt!
@@ -161,9 +161,9 @@ contract MirageShrine {
             revert();
         }
 
-        uint256 grace = fate.balanceOf(_ascender);
-        fate.burn(_ascender, grace);
-        prophecy.essence.transfer(_ascender, grace);
+        uint256 grace = fate.balanceOf(msg.sender);
+        fate.burn(msg.sender, grace);
+        prophecy.essence.transfer(msg.sender, grace);
     }
 
     function count() external view returns(uint256) {

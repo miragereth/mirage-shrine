@@ -1,7 +1,7 @@
 import { erc20ABI, getContract, Provider } from "@wagmi/core"
-import { BigNumber } from "ethers"
+import { BigNumber, providers } from "ethers"
 import { Prophecy } from "./get-prophecy"
-import { yellowPages } from "./yellow-pages"
+import { manualProviders, validNet, yellowPages } from "./yellow-pages"
 
 export const getBalanceOf = async (p: {
   networkId: number
@@ -50,6 +50,8 @@ export const getProphecyBalances = async (p: {
   owner: `0x${string}`
   prophecy: Prophecy
 }) => {
+  if (p.owner === undefined) return
+
   const [essence, essenceAllowance, yes, no] = await Promise.all([
     getBalanceOf({
       networkId: p.networkId,
@@ -84,4 +86,31 @@ export const getProphecyBalances = async (p: {
     yes: yes as BigNumber,
     no: no as BigNumber,
   }
+}
+
+export const getTokenSymbol = async (p: {
+  networkId: number
+  token: `0x${string}`
+}) => {
+  if (isNaN(p.networkId)) return
+  const provider = new providers.JsonRpcProvider(
+    manualProviders[p.networkId as validNet]
+  )
+  const essenceToken = getContract({
+    address: p.token,
+    abi: erc20ABI,
+    signerOrProvider: provider,
+  })
+  const symbolPromise = async () => {
+    let result = null
+    try {
+      result = await essenceToken.symbol()
+    } catch (e) {
+      console.log("Not a token", { token: p.token })
+    }
+    return result
+  }
+
+  const symbol = await symbolPromise()
+  return symbol
 }

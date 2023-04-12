@@ -1,9 +1,9 @@
-import { erc20ABI, getContract, Provider, readContract } from "@wagmi/core"
-import { BigNumber } from "ethers"
+import { erc20ABI, getContract, Provider } from "@wagmi/core"
+import { BigNumber, providers } from "ethers"
 import { FateABI, MirageShrineABI, RealityABI } from "./abis"
 import { getUniswapInfo, UniswapInfo } from "./get-uniswap-info"
 import { bytes23ToString } from "./rune"
-import { yellowPages } from "./yellow-pages"
+import { yellowPages, manualProviders, validNet } from "./yellow-pages"
 
 export enum Aura {
   Forthcoming,
@@ -157,7 +157,6 @@ export const getProphecy = async (p: {
   if (aura === Aura.Forthcoming) {
     // There is a reality result
     if (inquiryResult !== null) {
-      console.log({inquiryResult})
       if (BigNumber.from(inquiryResult).eq(BigNumber.from(0))) {
         aura = Aura.Mirage
       } else if (BigNumber.from(inquiryResult).eq(BigNumber.from(1))) {
@@ -192,25 +191,25 @@ export const getProphecy = async (p: {
   return prophecy
 }
 
-export const getAllProphecies = async (p: {
-  networkId: number
-  provider: Provider
-}) => {
+export const getAllProphecies = async (p: { networkId: number }) => {
+  if (isNaN(p.networkId)) return
+  const provider = new providers.JsonRpcProvider(
+    manualProviders[p.networkId as validNet]
+  )
   const shrine = getContract({
     address: yellowPages[p.networkId].shrine,
     abi: MirageShrineABI,
-    signerOrProvider: p.provider,
+    signerOrProvider: provider,
   })
   const prophecyCount = await shrine.count()
 
   const prophecyPromises = []
-
   for (let i = 0; i < prophecyCount.toNumber(); i++) {
     prophecyPromises.push(
       getProphecy({
         prophecyId: i,
         networkId: p.networkId,
-        provider: p.provider,
+        provider: provider,
       })
     )
   }

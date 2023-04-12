@@ -22,7 +22,7 @@ const { chains, provider } = configureChains(
   // Gnosis does not hold UniswapV3, but it shall be included for OTC trading.
   [polygon, gnosis, optimism, arbitrum, goerli],
   [
-    infuraProvider({ apiKey: import.meta.env.INFURA_KEY as string }),
+    infuraProvider({ apiKey: import.meta.env.VITE_INFURA_KEY as string }),
     publicProvider(),
   ]
 )

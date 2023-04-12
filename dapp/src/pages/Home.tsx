@@ -1,37 +1,24 @@
-import { getNetwork, getProvider } from "@wagmi/core"
 import useSWR from "swr"
 import { ProphecyCard } from "../components/ProphecyCard"
 import { getAllProphecies } from "../utils/get-prophecy"
+import { useParams } from "react-router-dom"
 
 const ProphecyList: React.FC = () => {
-  const network = getNetwork()
-  const provider = getProvider()
-
+  const { chainId } = useParams()
   const {
     data: prophecies,
     isLoading,
     error,
-  } = useSWR(`${network.chain?.id}:prophecies`, () =>
-    getAllProphecies({ networkId: network.chain?.id as number, provider })
+  } = useSWR(`${chainId}:prophecies`, () =>
+    getAllProphecies({
+      networkId: Number(chainId) as number,
+    })
   )
-
   if (error) return <div>There was an issue</div>
   if (isLoading || prophecies === undefined) return <div>Loading...</div>
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 grid-flow-row">
-      {prophecies.map((prophecy) => (
-        <ProphecyCard key={prophecy.inquiryId} prophecy={prophecy} />
-      ))}
-      {prophecies.map((prophecy) => (
-        <ProphecyCard key={prophecy.inquiryId} prophecy={prophecy} />
-      ))}
-      {prophecies.map((prophecy) => (
-        <ProphecyCard key={prophecy.inquiryId} prophecy={prophecy} />
-      ))}
-      {prophecies.map((prophecy) => (
-        <ProphecyCard key={prophecy.inquiryId} prophecy={prophecy} />
-      ))}
+    <div className="grid grid-flow-row grid-cols-1 gap-3 lg:grid-cols-2">
       {prophecies.map((prophecy) => (
         <ProphecyCard key={prophecy.inquiryId} prophecy={prophecy} />
       ))}

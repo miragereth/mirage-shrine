@@ -1,7 +1,7 @@
-import { getNetwork } from "@wagmi/core"
 import { BigNumber, FixedNumber } from "ethers"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { Prophecy } from "../utils/get-prophecy"
+import { UniswapInfo } from "../utils/get-uniswap-info"
 
 export const CalendarFrame: React.FC<{ horizon: Date }> = (p) => {
   const months = [
@@ -50,15 +50,17 @@ export const Inquiry: React.FC<{ inquiry: string; short: boolean }> = (p) => {
         <div className="grow" />
       </div>
       <blockquote
-        className={`italic w-${p.short ? "60" : "120"} text-justify text-${
-          p.short ? "sm" : "base"
-        }`}
+        className={`italic w-${p.short ? "60" : "120"} ${
+          p.inquiry !== "" ? "text-justify" : "text-center"
+        } text-${p.short ? "sm" : "base"}`}
       >
-        {p.short
-          ? `${p.inquiry.substring(0, shortLength)}${
-              p.inquiry.length > shortLength ? "..." : ""
-            }`
-          : p.inquiry}
+        {p.inquiry !== ""
+          ? p.short
+            ? `${p.inquiry.substring(0, shortLength)}${
+                p.inquiry.length > shortLength ? "..." : ""
+              }`
+            : p.inquiry
+          : "(empty)"}
       </blockquote>
       <div className="flex min-h-full flex-col justify-between px-2">
         <div className="grow" />
@@ -72,6 +74,7 @@ export const TokenDisplay: React.FC<{
   supply: BigNumber
   decimals: number | null
   symbol: string | null
+  small: boolean
 }> = (p) => {
   if (p.symbol === null || p.decimals === null) {
     return (
@@ -82,49 +85,75 @@ export const TokenDisplay: React.FC<{
   }
 
   const fixedAmount = fixAmount(p.supply, p.decimals)
-
+  // Do not bombard their attention with worthless amounts
+  const shown = Number(fixedAmount) < 0.01 ? "~" : fixedAmount.substring(0, 4)
+  const concatEssence = p.symbol.substring(0, 4)
   return (
-    <div className="flex flex-row items-center rounded-2xl bg-orange-100 pl-2 dark:bg-slate-900">
-      <span className="mr-2">{fixedAmount}</span>
-      <div className="flex items-center rounded-2xl p-1 dark:bg-black">
-        🐔
-        <span className="text-base font-bold">{p.symbol}</span>
+    <div className="flex flex-row items-center justify-between rounded-2xl bg-orange-100 pl-2 dark:bg-slate-900">
+      <span className={`${p.small ? "text-sm" : ""} w-8 text-center`}>
+        {shown}
+      </span>
+      <div className="flex items-center rounded-2xl bg-white p-1 dark:bg-black">
+        <span
+          className={`${p.small ? "text-sm" : ""}  ${p.small ? "w-10" : "w-14"}
+            ${p.small ? "mx-1" : ""}
+            text-center font-bold `}
+        >
+          {concatEssence}
+        </span>
       </div>
     </div>
   )
 }
 
 export const OddsDisplay: React.FC<{
-  yes: number | null
-  no: number | null
+  uniswapInfo: UniswapInfo
+  small: boolean
 }> = (p) => {
+  console.log(p.uniswapInfo)
+  const parseOdd = (n: number): string => `${n * 100}`.substring(0, 4) + "%"
+  const size = `${p.small ? "w-11 h-7 text-sm" : "w-14 h-8"}`
+  if (
+    p.uniswapInfo.no.buy === null &&
+    p.uniswapInfo.no.sell === null &&
+    p.uniswapInfo.yes.buy === null &&
+    p.uniswapInfo.yes.sell === null
+  ) {
+    // show empty
+    return (
+      <span
+        className={`${
+          p.small ? "h-7 w-[22]" : "h-8 w-28"
+        } rounded-2xl border-2 border-white
+        py-1 text-center font-bold text-black opacity-50`}
+      />
+    )
+  }
   return (
     <div className="flex justify-center">
-      {p.yes === null ? (
+      {p.uniswapInfo.yes.buy === null ? (
         <span
-          className="w-16 rounded-l-2xl bg-gray-300 py-1 pl-1 text-center font-bold
-          text-black dark:bg-gray-500"
-        >
-          —
-        </span>
+          className={`${size} rounded-l-2xl border-2 border-white
+          py-1 text-center font-bold text-black opacity-50`}
+        />
       ) : (
         <span
-          className="w-16 rounded-l-2xl bg-green-300 py-1 pl-1 text-center dark:bg-green-800
-        dark:text-white"
+          className={`${size} rounded-l-2xl bg-green-300 py-1 text-center
+        dark:bg-green-800 dark:text-white`}
         >
-          {p.yes * 100}%
+          {parseOdd(p.uniswapInfo.yes.buy)}
         </span>
       )}
-      {p.no === null ? (
+      {p.uniswapInfo.no.buy === null ? (
         <span
-          className="w-16 rounded-r-2xl bg-gray-300 py-1 pr-1 text-center font-bold
-        text-black dark:bg-gray-500"
-        >
-          —
-        </span>
+          className={`${size} rounded-r-2xl border-2 border-white 
+        py-1 text-center font-bold text-black opacity-50`}
+        />
       ) : (
-        <span className="w-16 rounded-r-2xl bg-red-300 py-1 pr-1 text-center dark:bg-red-800 dark:text-white">
-          {p.no * 100}%
+        <span
+          className={`${size} rounded-r-2xl bg-red-300 py-1 text-center dark:bg-red-800 dark:text-white`}
+        >
+          {parseOdd(p.uniswapInfo.no.buy)}
         </span>
       )}
     </div>
@@ -132,22 +161,20 @@ export const OddsDisplay: React.FC<{
 }
 
 export const ProphecyCard: React.FC<{ prophecy: Prophecy }> = (p) => {
-  const network = getNetwork()
+  const { chainId } = useParams()
 
   const emojis = ["🕯️", "🦠", "✔️", "❌", "⌛"]
 
   return (
-    <div className="w-fit">
-      <Link
-        to={`/chain/${network.chain?.id}/prophecy/${p.prophecy.prophecyId}`}
-      >
+    <div className="">
+      <Link to={`/chain/${chainId}/prophecy/${p.prophecy.prophecyId}`}>
         <div
           className="flex justify-between rounded-3xl border-2 border-transparent
-        bg-orange-200 p-3 opacity-80 hover:border-zinc-400 hover:opacity-100
+        bg-orange-200 p-2 opacity-80 hover:border-zinc-400 hover:opacity-100
           dark:bg-slate-800"
         >
-          <div className="mx-1 flex w-28 flex-row items-center justify-between">
-            {emojis[p.prophecy.aura]}
+          <div className="mr-1 flex w-28 flex-row items-center justify-between">
+            <div className="mr-1">{emojis[p.prophecy.aura]}</div>
             <CalendarFrame horizon={p.prophecy.horizon} />
           </div>
           <Inquiry inquiry={p.prophecy.inquiry} short={true} />
@@ -156,11 +183,9 @@ export const ProphecyCard: React.FC<{ prophecy: Prophecy }> = (p) => {
               decimals={p.prophecy.essenceDecimals}
               supply={p.prophecy.fateSupply}
               symbol={p.prophecy.essenceSymbol}
+              small
             />
-            <OddsDisplay
-              yes={p.prophecy.uniswapInfo.yesValue}
-              no={p.prophecy.uniswapInfo.noValue}
-            />
+            <OddsDisplay uniswapInfo={p.prophecy.uniswapInfo} small />
           </div>
         </div>
       </Link>
