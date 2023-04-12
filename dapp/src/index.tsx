@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import ReactDOM from "react-dom/client"
 import App from "./App"
 import "./index.css"
@@ -15,6 +15,7 @@ import { polygon, optimism, arbitrum, gnosis } from "wagmi/chains"
 import { infuraProvider } from "wagmi/providers/infura"
 import { publicProvider } from "wagmi/providers/public"
 import { SWRConfig } from "swr"
+import { DarkModeContext } from "./utils/dark-mode-refresher"
 
 const { chains, provider } = configureChains(
   // Ethereum Mainnet costs are too large.
@@ -38,11 +39,10 @@ const wagmiClient = createClient({
   provider,
 })
 
-// todo darkmode useContext
-// https://react.dev/reference/react/useContext
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
-    <WagmiConfig client={wagmiClient}>
+const DarkModeWorld = () => {
+  const [_, refresh] = useState<{}>({})
+  return (
+    <DarkModeContext.Provider value={refresh}>
       <RainbowKitProvider
         theme={localStorage.theme === "dark" ? darkTheme() : undefined}
         chains={chains}
@@ -53,11 +53,20 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             refreshWhenHidden: false,
             revalidateOnMount: true,
             revalidateIfStale: false,
+            dedupingInterval: 10000000,
           }}
         >
           <App />
         </SWRConfig>
       </RainbowKitProvider>
+    </DarkModeContext.Provider>
+  )
+}
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <React.StrictMode>
+    <WagmiConfig client={wagmiClient}>
+      <DarkModeWorld />
     </WagmiConfig>
   </React.StrictMode>
 )

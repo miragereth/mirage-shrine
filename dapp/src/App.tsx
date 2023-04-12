@@ -1,5 +1,5 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import {
   createHashRouter,
   createRoutesFromElements,
@@ -15,18 +15,16 @@ import { Home } from "./pages/Home"
 import { ProphecyPage } from "./pages/ProphecyDetail"
 import { ScryPage } from "./pages/Scry"
 import { ReactSVG } from "react-svg"
+import { DarkModeContext } from "./utils/dark-mode-refresher"
 
 const Navbar: React.FC = (p) => {
   const { chainId } = useParams()
   const [darkMode, setDarkMode] = useState<boolean>()
+  const refresher = useContext(DarkModeContext)
 
   const darkModeRefresh = () => {
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-    if (
-      localStorage.theme === "dark" ||
-      (!("theme" in localStorage) &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
+    if (localStorage.theme === "dark" || localStorage.theme !== "light") {
       document.documentElement.classList.add("dark")
       localStorage.theme = "dark"
       setDarkMode(true)
@@ -44,6 +42,7 @@ const Navbar: React.FC = (p) => {
       localStorage.theme = "dark"
     }
     darkModeRefresh()
+    refresher({})
   }
 
   useEffect(() => {
