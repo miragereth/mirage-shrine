@@ -52,7 +52,7 @@ const NewScryForm: React.FC<{
       <div className="p-4">
         <div className="">Create a Prophecy</div>
         <div className="flex flex-row justify-evenly">
-          <div className="w-60 py-3">
+          <div className="w-56 py-3">
             <div className="py-1">Horizon</div>
             {/* <div className="text-xs">Time of resolution</div> */}
             <div className="">
@@ -280,7 +280,7 @@ export const ScryPage: React.FC = () => {
           }}
           className={`${
             disabledScry ? "cursor-not-allowed" : "cursor-pointer"
-          } w-96 border-2 border-transparent ${
+          } w-80 border-2 border-transparent ${
             disabledScry
               ? "hover:border-red-500"
               : "hover:border-black dark:hover:border-white"

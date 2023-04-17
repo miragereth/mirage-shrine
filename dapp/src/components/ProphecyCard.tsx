@@ -21,14 +21,14 @@ export const CalendarFrame: React.FC<{ horizon: Date }> = (p) => {
 
   return (
     <div
-      className="flex h-20 w-20 flex-col items-center justify-center rounded-3xl bg-orange-300
+      className="flex h-[72px] w-[72px] flex-col items-center justify-center rounded-3xl bg-orange-300
     dark:bg-slate-900"
     >
-      <div className="flex text-xl font-bold">
+      <div className="flex text-lg font-bold">
         <span className="mr-1">{p.horizon.getDate()}</span>
         <span>{months[p.horizon.getMonth()]}</span>
       </div>
-      <div className="text-lg font-semibold">
+      <div className="text-base font-semibold">
         <span>{p.horizon.getFullYear()}</span>
       </div>
     </div>
@@ -42,15 +42,15 @@ export const fixAmount = (amount: BigNumber, decimals: number) =>
     .replace(/\.?0+$/, "")
 
 export const Inquiry: React.FC<{ inquiry: string; short: boolean }> = (p) => {
-  const shortLength = 100
+  const shortLength = 66
   return (
-    <div className={`flex flex-row items-center ${p.short ? "w-64" : ""}`}>
+    <div className={`flex flex-row items-center ${p.short ? "w-48" : ""}`}>
       <div className="flex min-h-full flex-col justify-between">
         <div className="text-2xl">&ldquo;</div>
         <div className="grow" />
       </div>
       <blockquote
-        className={`italic w-${p.short ? "60" : "120"} ${
+        className={`italic w-60 ${
           p.inquiry !== "" ? "text-justify" : "text-center"
         } text-${p.short ? "sm" : "base"}`}
       >
@@ -62,7 +62,7 @@ export const Inquiry: React.FC<{ inquiry: string; short: boolean }> = (p) => {
             : p.inquiry
           : "(empty)"}
       </blockquote>
-      <div className="flex min-h-full flex-col justify-between px-2">
+      <div className="mx-[2px] flex min-h-full flex-col justify-between">
         <div className="grow" />
         <div className="grow-0 text-2xl">&rdquo;</div>
       </div>
@@ -89,15 +89,14 @@ export const TokenDisplay: React.FC<{
   const shown = Number(fixedAmount) < 0.01 ? "~" : fixedAmount.substring(0, 4)
   const concatEssence = p.symbol.substring(0, 4)
   return (
-    <div className="flex flex-row items-center justify-between rounded-2xl bg-orange-100 pl-2 dark:bg-slate-900">
-      <span className={`${p.small ? "text-sm" : ""} w-8 text-center`}>
+    <div className="flex flex-row items-center justify-between rounded-2xl bg-orange-100 pl-1 dark:bg-slate-900">
+      <span className={`${p.small ? "w-8 text-sm" : "w-10"} text-center`}>
         {shown}
       </span>
       <div className="flex items-center rounded-2xl bg-white p-1 dark:bg-black">
         <span
-          className={`${p.small ? "text-sm" : ""}  ${p.small ? "w-10" : "w-14"}
-            ${p.small ? "mx-1" : ""}
-            text-center font-bold `}
+          className={`${p.small ? "mx-[1px] w-9 text-xs" : "w-14"}
+            text-center font-bold`}
         >
           {concatEssence}
         </span>
@@ -110,9 +109,8 @@ export const OddsDisplay: React.FC<{
   uniswapInfo: UniswapInfo
   small: boolean
 }> = (p) => {
-  console.log(p.uniswapInfo)
   const parseOdd = (n: number): string => `${n * 100}`.substring(0, 4) + "%"
-  const size = `${p.small ? "w-11 h-7 text-sm" : "w-14 h-8"}`
+  const size = `${p.small ? "w-10 h-7 text-sm py-1" : "w-14 h-8 py-1"}`
   if (
     p.uniswapInfo.no.buy === null &&
     p.uniswapInfo.no.sell === null &&
@@ -123,7 +121,7 @@ export const OddsDisplay: React.FC<{
     return (
       <span
         className={`${
-          p.small ? "h-7 w-[22]" : "h-8 w-28"
+          p.small ? "h-7 w-[80px]" : "h-8 w-28"
         } rounded-2xl border-2 border-white
         py-1 text-center font-bold text-black opacity-50`}
       />
@@ -133,12 +131,11 @@ export const OddsDisplay: React.FC<{
     <div className="flex justify-center">
       {p.uniswapInfo.yes.buy === null ? (
         <span
-          className={`${size} rounded-l-2xl border-2 border-white
-          py-1 text-center font-bold text-black opacity-50`}
+          className={`${size} rounded-l-2xl border-2 border-white opacity-50`}
         />
       ) : (
         <span
-          className={`${size} rounded-l-2xl bg-green-300 py-1 text-center
+          className={`${size} rounded-l-2xl bg-green-300 text-center
         dark:bg-green-800 dark:text-white`}
         >
           {parseOdd(p.uniswapInfo.yes.buy)}
@@ -146,12 +143,11 @@ export const OddsDisplay: React.FC<{
       )}
       {p.uniswapInfo.no.buy === null ? (
         <span
-          className={`${size} rounded-r-2xl border-2 border-white 
-        py-1 text-center font-bold text-black opacity-50`}
+          className={`${size} rounded-r-2xl border-2 border-white opacity-50`}
         />
       ) : (
         <span
-          className={`${size} rounded-r-2xl bg-red-300 py-1 text-center dark:bg-red-800 dark:text-white`}
+          className={`${size} rounded-r-2xl bg-red-300 text-center dark:bg-red-800 dark:text-white`}
         >
           {parseOdd(p.uniswapInfo.no.buy)}
         </span>
@@ -166,14 +162,14 @@ export const ProphecyCard: React.FC<{ prophecy: Prophecy }> = (p) => {
   const emojis = ["🕯️", "🦠", "✔️", "❌", "⌛"]
 
   return (
-    <div className="">
+    <div className="scale-95 md:scale-100 lg:scale-110">
       <Link to={`/chain/${chainId}/prophecy/${p.prophecy.prophecyId}`}>
         <div
-          className="flex justify-between rounded-3xl border-2 border-transparent
-        bg-orange-200 p-2 opacity-80 hover:border-zinc-400 hover:opacity-100
-          dark:bg-slate-800"
+          className="flex w-full justify-between rounded-3xl
+        border-2 border-transparent bg-orange-200 p-[5px] opacity-80 hover:border-zinc-400
+          hover:opacity-100 dark:bg-slate-800"
         >
-          <div className="mr-1 flex w-28 flex-row items-center justify-between">
+          <div className="mr-1 flex w-24 flex-row items-center justify-between">
             <div className="mr-1">{emojis[p.prophecy.aura]}</div>
             <CalendarFrame horizon={p.prophecy.horizon} />
           </div>

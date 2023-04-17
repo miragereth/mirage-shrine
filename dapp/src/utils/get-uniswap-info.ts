@@ -21,6 +21,11 @@ export const getUniswapInfo = async (p: {
   networkId: number
   provider: Provider
 }): Promise<UniswapInfo> => {
+  // UniswapV3 is not available in Gnosis Chain
+  if (p.networkId === 100) {
+    return { no: unavailable, yes: unavailable }
+  }
+
   const quoter = new ethers.Contract(
     yellowPages[p.networkId].uniswapQuoter,
     QuoterABI,

@@ -86,7 +86,9 @@ const Navbar: React.FC = (p) => {
         >
           {darkMode ? "🔆" : "🌚"}
         </button>
-        <ConnectButton />
+        <div className="hidden sm:block">
+          <ConnectButton />
+        </div>
       </div>
     </div>
   )
@@ -97,7 +99,7 @@ const Layout: React.FC = (p) => {
   return (
     <div>
       <Navbar />
-      <div className="flex flex-col items-center py-20">
+      <div className="flex flex-col items-center pt-24">
         <Outlet />
       </div>
     </div>

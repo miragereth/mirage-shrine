@@ -35,12 +35,12 @@ const ProphecyCore: React.FC<{ prophecy: Prophecy }> = (p) => {
         bg-orange-200 p-2 dark:bg-slate-800"
       >
         <div>
-          <div className="mr-1 flex w-28 flex-row items-center justify-between">
+          <div className="mr-1 flex w-24 flex-row items-center justify-between">
             <div className="mr-1">{emojis[p.prophecy.aura]}</div>
             <CalendarFrame horizon={p.prophecy.horizon} />
           </div>
           <div
-            className="mr-1 mt-2 flex w-28 flex-row items-center justify-between
+            className="mr-1 mt-2 flex w-24 flex-row items-center justify-between
               rounded-2xl bg-orange-100 dark:bg-slate-700"
           >
             <a
@@ -109,6 +109,7 @@ const Distill: React.FC<{ prophecy: Prophecy }> = (p) => {
         prophecy: p.prophecy,
       })
   )
+
   const [amount, setAmount] = useState<string>("")
   if (isLoading || balances === undefined) return <div>loading...</div>
 
@@ -192,7 +193,7 @@ const Distill: React.FC<{ prophecy: Prophecy }> = (p) => {
         <div className="flex flex-row items-center justify-between p-3">
           {/* Input */}
           <input
-            className="bg-transparent text-4xl"
+            className="w-2/3 bg-transparent text-4xl"
             value={amount}
             onChange={(e) => {
               handleAmountChange(e.target.value)
@@ -242,11 +243,11 @@ const Distill: React.FC<{ prophecy: Prophecy }> = (p) => {
       {/* Fates Display */}
       <div className="my-1 flex w-full flex-row items-center justify-between">
         {/* Yes Display */}
-        <div className="flex flex-col rounded-2xl bg-orange-300 dark:bg-slate-700">
+        <div className="flex w-5/12 flex-col rounded-2xl bg-orange-300 dark:bg-slate-700">
           <div className="flex flex-row items-center justify-between p-3">
             {/* Input */}
             <input
-              className="w-32 bg-transparent text-2xl"
+              className="w-2/3 bg-transparent text-2xl"
               value={amount}
               onChange={(e) => {
                 handleAmountChange(e.target.value)
@@ -272,11 +273,11 @@ const Distill: React.FC<{ prophecy: Prophecy }> = (p) => {
         {/* Distill Icon */}
         <span className="text-4xl">⚗️</span>
         {/* No Display */}
-        <div className="flex flex-col rounded-2xl bg-orange-300 dark:bg-slate-700">
+        <div className="flex w-5/12 flex-col rounded-2xl bg-orange-300 dark:bg-slate-700">
           <div className="flex flex-row items-center justify-between p-3">
             {/* Input */}
             <input
-              className="w-32 bg-transparent text-2xl"
+              className="w-2/3 bg-transparent text-2xl"
               value={amount}
               onChange={(e) => {
                 handleAmountChange(e.target.value)
@@ -435,11 +436,11 @@ const Blend: React.FC<{ prophecy: Prophecy }> = (p) => {
       {/* Fates Display */}
       <div className="my-1 flex w-full flex-row items-center justify-between">
         {/* Yes Display */}
-        <div className="flex flex-col rounded-2xl bg-orange-300 dark:bg-slate-700">
+        <div className="flex w-5/12 flex-col rounded-2xl bg-orange-300 dark:bg-slate-700">
           <div className="flex flex-row items-center justify-between p-3">
             {/* Input */}
             <input
-              className="w-32 bg-transparent text-2xl"
+              className="w-2/3 bg-transparent text-2xl"
               value={amount}
               onChange={(e) => {
                 handleAmountChange(e.target.value)
@@ -477,11 +478,11 @@ const Blend: React.FC<{ prophecy: Prophecy }> = (p) => {
         {/* Blend Icon */}
         <span className="text-4xl">🌀</span>
         {/* No Display */}
-        <div className="flex flex-col rounded-2xl bg-orange-300 dark:bg-slate-700">
+        <div className="flex w-5/12 flex-col rounded-2xl bg-orange-300 dark:bg-slate-700">
           <div className="flex flex-row items-center justify-between p-3">
             {/* Input */}
             <input
-              className="w-32 bg-transparent text-2xl"
+              className="w-2/3 bg-transparent text-2xl"
               value={amount}
               onChange={(e) => {
                 handleAmountChange(e.target.value)
@@ -522,7 +523,7 @@ const Blend: React.FC<{ prophecy: Prophecy }> = (p) => {
         <div className="flex flex-row items-center justify-between p-3">
           {/* Input */}
           <input
-            className="bg-transparent text-4xl"
+            className="w-2/3 bg-transparent text-4xl"
             value={amount}
             onChange={(e) => {
               handleAmountChange(e.target.value)
@@ -645,7 +646,7 @@ const Alchemy: React.FC<{ prophecy: Prophecy }> = (p) => {
 
   if (p.prophecy.aura === Aura.Entranced) {
     return (
-      <div className="m-2 rounded-2xl bg-orange-200 p-2 text-lg dark:bg-slate-800">
+      <div className="m-2 w-96 rounded-2xl bg-orange-200 p-2 dark:bg-slate-800">
         <p>
           ⌛ The prophecy is being resolved through{" "}
           <a
@@ -667,7 +668,7 @@ const Alchemy: React.FC<{ prophecy: Prophecy }> = (p) => {
     )
   } else if (p.prophecy.aura === Aura.Fulfilled) {
     return (
-      <div className="m-2 flex flex-col items-center rounded-2xl bg-orange-200 p-2 text-lg dark:bg-slate-800">
+      <div className="m-2 flex w-96 flex-col items-center rounded-2xl bg-orange-200 p-2 dark:bg-slate-800">
         <div className="flex flex-row">
           <span className="mr-3">✔️</span>{" "}
           <span>The prophecy was fulfilled.</span>
@@ -686,7 +687,7 @@ const Alchemy: React.FC<{ prophecy: Prophecy }> = (p) => {
     )
   } else if (p.prophecy.aura === Aura.Mirage) {
     return (
-      <div className="m-2 flex flex-col items-center rounded-2xl bg-orange-200 p-2 text-lg dark:bg-slate-800">
+      <div className="m-2 flex w-96 flex-col items-center rounded-2xl bg-orange-200 p-2 dark:bg-slate-800">
         <div className="flex flex-row">
           <span className="mr-3">❌ </span>{" "}
           <span>The prophecy was a mirage.</span>
@@ -706,7 +707,7 @@ const Alchemy: React.FC<{ prophecy: Prophecy }> = (p) => {
     )
   } else if (p.prophecy.aura === Aura.Blighted) {
     return (
-      <div className="m-2 flex flex-col items-center rounded-2xl bg-orange-200 p-2 text-lg dark:bg-slate-800">
+      <div className="m-2 flex w-96 flex-col items-center rounded-2xl bg-orange-200 p-2 text-lg dark:bg-slate-800">
         <span className="mr-3">🦠</span>{" "}
         <span>
           This prophecy was resolved as Blighted. Those who took part paid the
@@ -764,7 +765,7 @@ const FateMarketView: React.FC<{
     42161: "arbitrum",
   }[Number(chainId) as number] as string
   return (
-    <div className="m-1 flex h-52 w-full flex-col items-center rounded-2xl bg-orange-300 p-2 dark:bg-slate-900">
+    <div className="m-1 flex min-h-full w-full flex-col items-center rounded-2xl bg-orange-300 p-2 dark:bg-slate-900">
       {/* Essence Symbol */}
       <span className="mb-1 rounded-2xl bg-orange-200 py-1 px-2 text-lg font-bold dark:bg-slate-600">
         {p.name}
@@ -774,7 +775,7 @@ const FateMarketView: React.FC<{
           <a
             target="_blank"
             href={`https://app.uniswap.org/#/swap?inputCurrency=${p.essenceAddress}&outputCurrency=${p.fateAddress}&chain=${chainName}`}
-            className="m-1 w-40 rounded-2xl border-2 border-transparent bg-orange-200 p-2 text-center opacity-70 hover:border-black hover:opacity-100 dark:bg-slate-700 dark:hover:border-white"
+            className="m-1 w-32 rounded-2xl border-2 border-transparent bg-orange-200 p-2 text-center opacity-70 hover:border-black hover:opacity-100 dark:bg-slate-700 dark:hover:border-white"
           >
             Buy{" "}
             <span className="font-bold text-green-900 dark:text-green-200">
@@ -786,7 +787,7 @@ const FateMarketView: React.FC<{
           <a
             target="_blank"
             href={`https://app.uniswap.org/#/swap?inputCurrency=${p.fateAddress}&outputCurrency=${p.essenceAddress}&chain=${chainName}`}
-            className="m-1 w-40 rounded-2xl border-2 border-transparent bg-orange-200 p-2 text-center opacity-70 hover:border-black hover:opacity-100 dark:bg-slate-700 dark:hover:border-white"
+            className="m-1 w-32 rounded-2xl border-2 border-transparent bg-orange-200 p-2 text-center opacity-70 hover:border-black hover:opacity-100 dark:bg-slate-700 dark:hover:border-white"
           >
             Sell{" "}
             <span className="font-bold text-red-700 dark:text-red-500">
@@ -797,14 +798,14 @@ const FateMarketView: React.FC<{
         <a
           target="_blank"
           href={`https://app.uniswap.org/#/add/${p.fateAddress}/${p.essenceAddress}/10000?minPrice=0.50663&maxPrice=0.50663&chain=${chainName}`}
-          className="m-1 w-40 rounded-2xl border-2 border-transparent bg-pink-400 p-2 text-center
+          className="m-1 w-32 rounded-2xl border-2 border-transparent bg-pink-400 p-2 text-center
             opacity-70 hover:border-black hover:opacity-100 dark:bg-pink-700 dark:hover:border-white"
         >
           {`${
             p.trade.sell === null && p.trade.buy === null
               ? "Create a Pool"
               : "Add Liquidity"
-          } 🦄`}
+          }`}
         </a>
       </div>
     </div>
@@ -812,17 +813,16 @@ const FateMarketView: React.FC<{
 }
 
 const Market: React.FC<{ prophecy: Prophecy }> = (p) => {
-  const network = getNetwork()
   const { chainId } = useParams()
   if (chainId === "100")
     return <div>Uniswap does not exist in Gnosis Chain.</div>
   return (
-    <div className="flex flex-col items-center rounded-2xl bg-orange-200 p-3 dark:bg-slate-800">
+    <div className="flex w-96 flex-col items-center rounded-2xl bg-orange-200 p-3 dark:bg-slate-800">
       <div className="flex w-full flex-row">
         <span className="m-1 grow-0 text-xl">Marketplace</span>
         <div className="grow" />
       </div>
-      <div className="flex w-full flex-row items-center justify-between">
+      <div className="flex w-full flex-row justify-between">
         <FateMarketView
           trade={p.prophecy.uniswapInfo.yes}
           name="YES"
@@ -845,7 +845,7 @@ const MatterInteraction: React.FC<{ prophecy: Prophecy }> = (p) => {
   }
 
   return (
-    <div>
+    <div className="flex w-full max-w-md flex-col items-center p-1">
       <Alchemy prophecy={p.prophecy} />
       <Market prophecy={p.prophecy} />
     </div>
@@ -867,8 +867,10 @@ export const ProphecyPage: React.FC = (p) => {
   if (prophecy === undefined) return <div>loading...</div>
 
   return (
-    <div className="flex w-[50rem] flex-col items-center">
-      <ProphecyCore prophecy={prophecy} />
+    <div className="flex w-full flex-col items-center">
+      <div className="scale-[0.75] md:scale-100">
+        <ProphecyCore prophecy={prophecy} />
+      </div>
 
       <MatterInteraction prophecy={prophecy} />
     </div>

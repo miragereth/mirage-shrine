@@ -3,7 +3,7 @@ import { ProphecyCard } from "../components/ProphecyCard"
 import { getAllProphecies } from "../utils/get-prophecy"
 import { useParams } from "react-router-dom"
 
-const ProphecyList: React.FC = () => {
+export const Home: React.FC = () => {
   const { chainId } = useParams()
   const {
     data: prophecies,
@@ -18,18 +18,10 @@ const ProphecyList: React.FC = () => {
   if (isLoading || prophecies === undefined) return <div>Loading...</div>
 
   return (
-    <div className="grid grid-flow-row grid-cols-1 gap-3 lg:grid-cols-2">
+    <div className="grid grid-flow-row grid-cols-1 gap-1 md:grid-cols-2 md:gap-2 lg:gap-x-12 lg:gap-y-4 xl:grid-cols-3">
       {prophecies.map((prophecy) => (
         <ProphecyCard key={prophecy.inquiryId} prophecy={prophecy} />
       ))}
-    </div>
-  )
-}
-
-export const Home: React.FC = () => {
-  return (
-    <div className="flex flex-col items-center">
-      <ProphecyList />
     </div>
   )
 }
