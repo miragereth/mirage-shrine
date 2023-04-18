@@ -9,6 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.12.1",
     "@rainbow-me/rainbowkit": "^0.12.1",
     "@uniswap/sdk-core": "^3.2.2",
     "@uniswap/v3-periphery": "^1.4.3",

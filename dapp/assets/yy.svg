@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="-5 -5 805 805">
+	<circle cx="370" cy="370" r="360" fill="white" />
 	<g id="YinYang" fill="#000" stroke="none" stroke-width="0" fill-rule="evenodd">
 		<title>Yin-Yang, by Adam Stanislav</title>
 		<desc>The entire graphic is drawn as a single path filled with black (or any other color you change the value of “fill” in line 4). The other half, usually shown in white is created here as a hole in the path. That means it is completely transparent, and has whatever color its background has. To achieve this, not just with SVG but with other vector formats, any black portion of the path is drawn counterclockwise, any “white” portion clockwise. Also, this graphic is taking advantage of the kappa constant described in my e-book Bézier Circles and other shapes, freely downloadable from https://www.smashwords.com/books/view/483578 .</desc>

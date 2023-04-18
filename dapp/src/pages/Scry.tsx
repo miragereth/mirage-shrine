@@ -50,7 +50,7 @@ const NewScryForm: React.FC<{
   return (
     <div className="flex flex-col rounded-2xl bg-orange-200 dark:bg-slate-800">
       <div className="p-4">
-        <div className="">Create a Prophecy</div>
+        <div className="font-semibold text-lg">Create a Prophecy</div>
         <div className="flex flex-row justify-evenly">
           <div className="w-56 py-3">
             <div className="py-1">Horizon</div>
@@ -249,7 +249,7 @@ export const ScryPage: React.FC = () => {
         signerBalance.value.lte(
           BigNumber.from(yellowPages[network.chain?.id as number].tribute)
         )
-      ? "Not enough funds to pay tribute"
+      ? "Not enough funds"
       : inquiry === ""
       ? "Write your inquiry"
       : new Date() >= horizon

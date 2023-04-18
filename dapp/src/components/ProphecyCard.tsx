@@ -2,6 +2,11 @@ import { BigNumber, FixedNumber } from "ethers"
 import { Link, useParams } from "react-router-dom"
 import { Prophecy } from "../utils/get-prophecy"
 import { UniswapInfo } from "../utils/get-uniswap-info"
+import WhatshotIcon from "@mui/icons-material/Whatshot"
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty"
+import CoronavirusIcon from "@mui/icons-material/Coronavirus"
+import CheckIcon from "@mui/icons-material/Check"
+import CloseIcon from "@mui/icons-material/Close"
 
 export const CalendarFrame: React.FC<{ horizon: Date }> = (p) => {
   const months = [
@@ -50,7 +55,7 @@ export const Inquiry: React.FC<{ inquiry: string; short: boolean }> = (p) => {
         <div className="grow" />
       </div>
       <blockquote
-        className={`italic w-60 ${
+        className={`w-60 italic ${
           p.inquiry !== "" ? "text-justify" : "text-center"
         } text-${p.short ? "sm" : "base"}`}
       >
@@ -159,7 +164,13 @@ export const OddsDisplay: React.FC<{
 export const ProphecyCard: React.FC<{ prophecy: Prophecy }> = (p) => {
   const { chainId } = useParams()
 
-  const emojis = ["🕯️", "🦠", "✔️", "❌", "⌛"]
+  const emojis = [
+    <WhatshotIcon />,
+    <CoronavirusIcon />,
+    <CheckIcon />,
+    <CloseIcon />,
+    <HourglassEmptyIcon />,
+  ]
 
   return (
     <div className="scale-95 md:scale-100 lg:scale-110">

@@ -16,6 +16,8 @@ import { ProphecyPage } from "./pages/ProphecyDetail"
 import { ScryPage } from "./pages/Scry"
 import { ReactSVG } from "react-svg"
 import { DarkModeContext } from "./utils/dark-mode-refresher"
+import Brightness5Icon from "@mui/icons-material/Brightness5"
+import DarkModeIcon from "@mui/icons-material/DarkMode"
 
 const Navbar: React.FC = (p) => {
   const { chainId } = useParams()
@@ -84,7 +86,7 @@ const Navbar: React.FC = (p) => {
           }}
           className="px-4 py-1"
         >
-          {darkMode ? "🔆" : "🌚"}
+          {darkMode ? <Brightness5Icon /> : <DarkModeIcon />}
         </button>
         <div className="hidden sm:block">
           <ConnectButton />

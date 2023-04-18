@@ -25,8 +25,25 @@ import { formatUnits, parseUnits } from "ethers/lib/utils.js"
 import { Trade } from "../utils/get-uniswap-info"
 import { ReactSVG } from "react-svg"
 
+import WhatshotIcon from "@mui/icons-material/Whatshot"
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty"
+import CoronavirusIcon from "@mui/icons-material/Coronavirus"
+import CheckIcon from "@mui/icons-material/Check"
+import CloseIcon from "@mui/icons-material/Close"
+
+import LoopRoundedIcon from "@mui/icons-material/LoopRounded"
+import ScienceRoundedIcon from "@mui/icons-material/ScienceRounded"
+import CycloneIcon from "@mui/icons-material/Cyclone"
+
 const ProphecyCore: React.FC<{ prophecy: Prophecy }> = (p) => {
-  const emojis = ["🕯️", "🦠", "✔️", "❌", "⌛"]
+  const emojis = [
+    <WhatshotIcon />,
+    <CoronavirusIcon />,
+    <CheckIcon />,
+    <CloseIcon />,
+    <HourglassEmptyIcon />,
+  ]
+
   const { chainId } = useParams()
   return (
     <div className="">
@@ -271,7 +288,7 @@ const Distill: React.FC<{ prophecy: Prophecy }> = (p) => {
           </div>
         </div>
         {/* Distill Icon */}
-        <span className="text-4xl">⚗️</span>
+        <ScienceRoundedIcon fontSize="large" />
         {/* No Display */}
         <div className="flex w-5/12 flex-col rounded-2xl bg-orange-300 dark:bg-slate-700">
           <div className="flex flex-row items-center justify-between p-3">
@@ -476,7 +493,7 @@ const Blend: React.FC<{ prophecy: Prophecy }> = (p) => {
           </div>
         </div>
         {/* Blend Icon */}
-        <span className="text-4xl">🌀</span>
+        <CycloneIcon fontSize="large" />
         {/* No Display */}
         <div className="flex w-5/12 flex-col rounded-2xl bg-orange-300 dark:bg-slate-700">
           <div className="flex flex-row items-center justify-between p-3">
@@ -646,9 +663,10 @@ const Alchemy: React.FC<{ prophecy: Prophecy }> = (p) => {
 
   if (p.prophecy.aura === Aura.Entranced) {
     return (
-      <div className="m-2 w-96 rounded-2xl bg-orange-200 p-2 dark:bg-slate-800">
+      <div className="m-2 flex w-96 flex-row items-center justify-center rounded-2xl bg-orange-200 p-2 dark:bg-slate-800">
+        <HourglassEmptyIcon className="mr-2" />
         <p>
-          ⌛ The prophecy is being resolved through{" "}
+          Prophecy being resolved in{" "}
           <a
             href={`https://reality.eth.limo/app/#!/network/${chainId}/question/${
               yellowPages[Number(chainId) as number].reality
@@ -662,7 +680,6 @@ const Alchemy: React.FC<{ prophecy: Prophecy }> = (p) => {
             />{" "}
             Reality
           </a>
-          .
         </p>
       </div>
     )
@@ -670,7 +687,7 @@ const Alchemy: React.FC<{ prophecy: Prophecy }> = (p) => {
     return (
       <div className="m-2 flex w-96 flex-col items-center rounded-2xl bg-orange-200 p-2 dark:bg-slate-800">
         <div className="flex flex-row">
-          <span className="mr-3">✔️</span>{" "}
+          <CheckIcon className="mr-2" />
           <span>The prophecy was fulfilled.</span>
         </div>
         {balances?.yes.gt(BigNumber.from(0)) && (
@@ -689,7 +706,7 @@ const Alchemy: React.FC<{ prophecy: Prophecy }> = (p) => {
     return (
       <div className="m-2 flex w-96 flex-col items-center rounded-2xl bg-orange-200 p-2 dark:bg-slate-800">
         <div className="flex flex-row">
-          <span className="mr-3">❌ </span>{" "}
+          <CloseIcon className="mr-2" />
           <span>The prophecy was a mirage.</span>
         </div>
 
@@ -707,12 +724,12 @@ const Alchemy: React.FC<{ prophecy: Prophecy }> = (p) => {
     )
   } else if (p.prophecy.aura === Aura.Blighted) {
     return (
-      <div className="m-2 flex w-96 flex-col items-center rounded-2xl bg-orange-200 p-2 text-lg dark:bg-slate-800">
-        <span className="mr-3">🦠</span>{" "}
-        <span>
-          This prophecy was resolved as Blighted. Those who took part paid the
-          price.
-        </span>
+      <div className="m-2 flex w-96 flex-row items-center justify-center rounded-2xl bg-orange-200 p-2 dark:bg-slate-800">
+        <CoronavirusIcon className="mr-2" />
+        <p>
+          This prophecy predicted a forbidden future. Those who took part paid
+          the price.
+        </p>
       </div>
     )
   }
@@ -726,7 +743,7 @@ const Alchemy: React.FC<{ prophecy: Prophecy }> = (p) => {
         <div className="mb-1 flex flex-row items-center justify-between">
           <span className="ml-2 text-xl">{alchemyMode}</span>
           <button
-            className="rounded-2xl bg-orange-300 p-2 text-xl dark:bg-slate-700"
+            className="flex flex-row items-center rounded-2xl bg-orange-300 p-2 text-xl dark:bg-slate-700"
             onClick={() => {
               if (alchemyMode === "Blend") {
                 setAlchemyMode("Distill")
@@ -735,7 +752,8 @@ const Alchemy: React.FC<{ prophecy: Prophecy }> = (p) => {
               }
             }}
           >
-            ♻ {alchemyMode === "Distill" ? "Blend" : "Distill"}
+            <LoopRoundedIcon fontSize="medium" className="mr-1" />{" "}
+            {alchemyMode === "Distill" ? "Blend" : "Distill"}
           </button>
         </div>
 
