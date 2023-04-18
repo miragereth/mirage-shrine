@@ -9,7 +9,7 @@ import {
   getDefaultWallets,
   RainbowKitProvider,
 } from "@rainbow-me/rainbowkit"
-import { configureChains, createClient, goerli, WagmiConfig } from "wagmi"
+import { configureChains, createClient, WagmiConfig } from "wagmi"
 import { polygon, optimism, arbitrum, gnosis } from "wagmi/chains"
 
 import { infuraProvider } from "wagmi/providers/infura"
@@ -20,8 +20,8 @@ import { DarkModeContext } from "./utils/dark-mode-refresher"
 const { chains, provider } = configureChains(
   // Ethereum Mainnet costs are too large.
   // BSC is unreliable.
-  // Gnosis does not hold UniswapV3, but it shall be included for OTC trading.
-  [polygon, gnosis, optimism, arbitrum, goerli],
+  // Gnosis does not hold UniswapV3, but it shall be included for OTC trading in future versions.
+  [polygon],
   [
     infuraProvider({ apiKey: import.meta.env.VITE_INFURA_KEY as string }),
     publicProvider(),

@@ -146,7 +146,7 @@ const Redirect: React.FC = () => {
   const network = useNetwork()
 
   useEffect(() => {
-    navigate(`/chain/${network.chain?.id}`)
+    navigate(`/chain/${network.chain?.id ? network.chain?.id : "137"}`)
   }, [network.chain?.id])
 
   return null
