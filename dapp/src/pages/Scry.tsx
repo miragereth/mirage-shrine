@@ -147,7 +147,7 @@ const ProphecyPreview: React.FC<{
           <TokenDisplay
             decimals={18}
             supply={BigNumber.from("1000000000000000000")}
-            symbol={"WETH"}
+            symbol={"WMATIC"}
             small
           />
           <OddsDisplay

@@ -16,8 +16,10 @@ import { ProphecyPage } from "./pages/ProphecyDetail"
 import { ScryPage } from "./pages/Scry"
 import { ReactSVG } from "react-svg"
 import { DarkModeContext } from "./utils/dark-mode-refresher"
-import Brightness5Icon from "@mui/icons-material/Brightness5"
+import LightModeIcon from "@mui/icons-material/LightMode"
 import DarkModeIcon from "@mui/icons-material/DarkMode"
+import GitHubIcon from "@mui/icons-material/GitHub"
+import TwitterIcon from "@mui/icons-material/Twitter"
 
 const Navbar: React.FC = (p) => {
   const { chainId } = useParams()
@@ -56,13 +58,13 @@ const Navbar: React.FC = (p) => {
     <div className="fixed z-50 flex w-full flex-row items-center justify-between bg-orange-100 bg-opacity-80 p-5 dark:bg-slate-700 dark:bg-opacity-80">
       <div className="flex flex-row items-center">
         <ReactSVG
-          className="hover:animation-linear hover:animation-continue mr-5 h-8 w-8 hover:animate-spin"
+          className="hover:animation-linear hover:animation-continue mr-2 h-8 w-8 hover:animate-spin"
           src="../assets/yy.svg"
         />
         <nav className="flex flex-row items-center">
           <NavLink
             className={({ isActive }) =>
-              `w-32 py-1 px-4 font-bold ${isActive ? "" : "opacity-60"}`
+              `w-28 py-1 px-4 font-bold ${isActive ? "" : "opacity-60"}`
             }
             to={`chain/${chainId}`}
             end
@@ -79,14 +81,37 @@ const Navbar: React.FC = (p) => {
           </NavLink>
         </nav>
       </div>
+
       <div className="flex flex-row items-center">
+        <div className="mr-2 flex flex-row items-center">
+          <a
+            href="https://github.com/miragereth/mirage-shrine"
+            target="_blank"
+            className="mr-1"
+          >
+            <GitHubIcon />
+          </a>
+          <a
+            href="https://twitter.com/miragereth"
+            target="_blank"
+            className="mr-1"
+          >
+            <TwitterIcon />
+          </a>
+          <a href="https://discord.gg/4mRTZKMH9s" target="_blank">
+            <ReactSVG
+              className="mt-1 h-6 w-6 fill-black dark:fill-white"
+              src="../assets/discord-icon.svg"
+            />
+          </a>
+        </div>
         <button
           onClick={() => {
             darkModeToggle()
           }}
-          className="px-4 py-1"
+          className="px-2 py-1"
         >
-          {darkMode ? <Brightness5Icon /> : <DarkModeIcon />}
+          {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
         </button>
         <div className="hidden sm:block">
           <ConnectButton />

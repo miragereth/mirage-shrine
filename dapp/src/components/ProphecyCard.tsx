@@ -114,7 +114,14 @@ export const OddsDisplay: React.FC<{
   uniswapInfo: UniswapInfo
   small: boolean
 }> = (p) => {
-  const parseOdd = (n: number): string => `${n * 100}`.substring(0, 4) + "%"
+  const parseOdd = (n: number): string => {
+    const percent = n * 100
+    if (percent >= 10) {
+      return Math.floor(percent).toString()
+    } else {
+      return percent.toString().substring(0, 3)
+    }
+  }
   const size = `${p.small ? "w-10 h-7 text-sm py-1" : "w-14 h-8 py-1"}`
   if (
     p.uniswapInfo.no.buy === null &&
@@ -132,9 +139,27 @@ export const OddsDisplay: React.FC<{
       />
     )
   }
+  const no =
+    p.uniswapInfo.no.buy === null && p.uniswapInfo.no.sell === null
+      ? null
+      : p.uniswapInfo.no.buy === null
+      ? `${parseOdd(p.uniswapInfo.no.sell as number)}%*`
+      : p.uniswapInfo.no.sell === null
+      ? `${parseOdd(p.uniswapInfo.no.buy as number)}%*`
+      : `${parseOdd(p.uniswapInfo.no.buy + p.uniswapInfo.no.sell / 2)}%`
+
+  const yes =
+    p.uniswapInfo.yes.buy === null && p.uniswapInfo.yes.sell === null
+      ? null
+      : p.uniswapInfo.yes.buy === null
+      ? `${parseOdd(p.uniswapInfo.yes.sell as number)}%*`
+      : p.uniswapInfo.yes.sell === null
+      ? `${parseOdd(p.uniswapInfo.yes.buy as number)}%*`
+      : `${parseOdd(p.uniswapInfo.yes.buy + p.uniswapInfo.yes.sell / 2)}%`
+
   return (
     <div className="flex justify-center">
-      {p.uniswapInfo.yes.buy === null ? (
+      {yes === null ? (
         <span
           className={`${size} rounded-l-2xl border-2 border-white opacity-50`}
         />
@@ -143,10 +168,10 @@ export const OddsDisplay: React.FC<{
           className={`${size} rounded-l-2xl bg-green-300 text-center
         dark:bg-green-800 dark:text-white`}
         >
-          {parseOdd(p.uniswapInfo.yes.buy)}
+          {yes}
         </span>
       )}
-      {p.uniswapInfo.no.buy === null ? (
+      {no === null ? (
         <span
           className={`${size} rounded-r-2xl border-2 border-white opacity-50`}
         />
@@ -154,7 +179,7 @@ export const OddsDisplay: React.FC<{
         <span
           className={`${size} rounded-r-2xl bg-red-300 text-center dark:bg-red-800 dark:text-white`}
         >
-          {parseOdd(p.uniswapInfo.no.buy)}
+          {no}
         </span>
       )}
     </div>

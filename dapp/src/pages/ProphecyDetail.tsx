@@ -323,7 +323,7 @@ const Distill: React.FC<{ prophecy: Prophecy }> = (p) => {
       <div className="mt-1 flex w-full">
         {needsAllowance ? (
           <button
-            className={`h-12 w-full rounded-2xl bg-blue-300 p-1 text-lg ${
+            className={`h-12 w-full rounded-2xl bg-blue-300 p-1 text-lg dark:bg-blue-500 ${
               valid ? "" : "cursor-not-allowed"
             }`}
             disabled={!valid}
@@ -337,7 +337,7 @@ const Distill: React.FC<{ prophecy: Prophecy }> = (p) => {
           <button
             className={`h-12 w-full rounded-2xl text-lg ${
               valid
-                ? "bg-orange-300 dark:bg-slate-600"
+                ? "bg-orange-300 dark:bg-blue-500"
                 : "cursor-not-allowed bg-orange-100 opacity-60 dark:bg-slate-900"
             } p-1`}
             disabled={!valid}
@@ -571,7 +571,7 @@ const Blend: React.FC<{ prophecy: Prophecy }> = (p) => {
         <button
           className={`h-12 w-full rounded-2xl text-lg ${
             valid
-              ? "bg-orange-300 dark:bg-slate-600"
+              ? "bg-orange-300 dark:bg-blue-500"
               : "cursor-not-allowed bg-orange-100 opacity-60 dark:bg-slate-900"
           } p-1`}
           disabled={!valid}

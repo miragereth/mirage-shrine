@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: Mirage Shrine Oath
+// SPDX-License-Identifier: Mirage Shrine Vow
 
 // This scroll grants you the power to wield this creation as you see fit.
 // Be warned, the winds of fate may turn against those who misuse it.
@@ -95,7 +95,7 @@ contract MirageShrine {
             templateId,
             _inquiry,
             arbitrator,
-            10 minutes, // todo change
+            2 days,
             _horizon,
             0,
             minBond
