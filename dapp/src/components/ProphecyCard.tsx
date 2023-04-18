@@ -47,7 +47,7 @@ export const fixAmount = (amount: BigNumber, decimals: number) =>
     .replace(/\.?0+$/, "")
 
 export const Inquiry: React.FC<{ inquiry: string; short: boolean }> = (p) => {
-  const shortLength = 66
+  const shortLength = 56
   return (
     <div className={`flex flex-row items-center ${p.short ? "w-48" : ""}`}>
       <div className="flex min-h-full flex-col justify-between">
@@ -55,7 +55,7 @@ export const Inquiry: React.FC<{ inquiry: string; short: boolean }> = (p) => {
         <div className="grow" />
       </div>
       <blockquote
-        className={`w-60 italic ${
+        className={`w-60 italic break-words ${
           p.inquiry !== "" ? "text-justify" : "text-center"
         } text-${p.short ? "sm" : "base"}`}
       >

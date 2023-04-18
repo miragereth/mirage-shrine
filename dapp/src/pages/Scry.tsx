@@ -21,6 +21,7 @@ import {
 } from "../utils/yellow-pages"
 import { AutoExpandingTextarea } from "./Auto"
 import useSWR from "swr"
+import { getAllProphecies } from "../utils/get-prophecy"
 
 type Setter = React.Dispatch<React.SetStateAction<string>>
 
@@ -50,7 +51,7 @@ const NewScryForm: React.FC<{
   return (
     <div className="flex flex-col rounded-2xl bg-orange-200 dark:bg-slate-800">
       <div className="p-4">
-        <div className="font-semibold text-lg">Create a Prophecy</div>
+        <div className="text-lg font-semibold">Create a Prophecy</div>
         <div className="flex flex-row justify-evenly">
           <div className="w-56 py-3">
             <div className="py-1">Horizon</div>
@@ -179,6 +180,12 @@ export const ScryPage: React.FC = () => {
   })
   const { chainId } = useParams()
 
+  const { mutate } = useSWR(`${chainId}:prophecies`, () =>
+    getAllProphecies({
+      networkId: Number(chainId) as number,
+    })
+  )
+
   // In this first version, no way to choose Essence.
   // This speeds up development.
   const essence = yellowPages[Number(chainId) as number].defaultEssence
@@ -215,7 +222,10 @@ export const ScryPage: React.FC = () => {
           "0x56aae38b92d5fab163d450f2070ce3d8646dad1f4280ff03b18e47090f50f7f8"
     ) as Log
     const prophecyId = BigNumber.from(scryLog.topics[1]).toNumber()
-    navigate(`/chain/${network.chain?.id}/prophecy/${prophecyId}`)
+    setTimeout(() => {
+      mutate()
+      navigate(`/chain/${network.chain?.id}/prophecy/${prophecyId}`)
+    }, 3000)
   }
 
   useEffect(() => {

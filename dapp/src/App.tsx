@@ -10,7 +10,7 @@ import {
   Outlet,
   useParams,
 } from "react-router-dom"
-import { useNetwork, useProvider } from "wagmi"
+import { useNetwork } from "wagmi"
 import { Home } from "./pages/Home"
 import { ProphecyPage } from "./pages/ProphecyDetail"
 import { ScryPage } from "./pages/Scry"
@@ -20,6 +20,7 @@ import LightModeIcon from "@mui/icons-material/LightMode"
 import DarkModeIcon from "@mui/icons-material/DarkMode"
 import GitHubIcon from "@mui/icons-material/GitHub"
 import TwitterIcon from "@mui/icons-material/Twitter"
+import HelpIcon from "@mui/icons-material/Help"
 
 const Navbar: React.FC = (p) => {
   const { chainId } = useParams()
@@ -84,6 +85,13 @@ const Navbar: React.FC = (p) => {
 
       <div className="flex flex-row items-center">
         <div className="mr-2 flex flex-row items-center">
+          <a
+            href="https://github.com/miragereth/mirage-shrine/blob/master/HELP.md"
+            target="_blank"
+            className="mr-1"
+          >
+            <HelpIcon />
+          </a>
           <a
             href="https://github.com/miragereth/mirage-shrine"
             target="_blank"

@@ -133,7 +133,7 @@ const Distill: React.FC<{ prophecy: Prophecy }> = (p) => {
   if (balances.essence === null) return <div>Bad token</div>
 
   const approve = async () => {
-    await getContract({
+    const tx = await getContract({
       address: p.prophecy.essence,
       abi: erc20ABI,
       signerOrProvider: signer as Signer,
@@ -142,11 +142,12 @@ const Distill: React.FC<{ prophecy: Prophecy }> = (p) => {
       constants.MaxUint256
     )
 
-    mutate()
+    await tx.wait()
+    setTimeout(() => mutate(), 3000)
   }
 
   const distill = async () => {
-    await getContract({
+    const tx = await getContract({
       address: yellowPages[network.chain?.id as number].shrine,
       abi: MirageShrineABI,
       signerOrProvider: signer as Signer,
@@ -154,7 +155,8 @@ const Distill: React.FC<{ prophecy: Prophecy }> = (p) => {
       BigNumber.from(p.prophecy.prophecyId),
       ethers.utils.parseUnits(amount, p.prophecy.essenceDecimals as number)
     )
-    mutate()
+    await tx.wait()
+    setTimeout(() => mutate(), 3000)
   }
 
   const valid =
@@ -378,7 +380,7 @@ const Blend: React.FC<{ prophecy: Prophecy }> = (p) => {
   if (balances.essence === null) return <div>Bad token</div>
 
   const blend = async () => {
-    await getContract({
+    const tx = await getContract({
       address: yellowPages[network.chain?.id as number].shrine,
       abi: MirageShrineABI,
       signerOrProvider: signer as Signer,
@@ -386,7 +388,8 @@ const Blend: React.FC<{ prophecy: Prophecy }> = (p) => {
       BigNumber.from(p.prophecy.prophecyId),
       ethers.utils.parseUnits(amount, p.prophecy.essenceDecimals as number)
     )
-    mutate()
+    await tx.wait()
+    setTimeout(() => mutate(), 3000)
   }
 
   const valid =
@@ -597,12 +600,13 @@ const Ascend: React.FC<{
   const { data: signer } = useSigner()
 
   const ascend = async () => {
-    await getContract({
+    const tx = await getContract({
       address: yellowPages[network.chain?.id as number].shrine,
       abi: MirageShrineABI,
       signerOrProvider: signer as Signer,
     }).ascend(BigNumber.from(p.prophecyId))
-    p.mutate()
+    await tx.wait()
+    setTimeout(() => p.mutate(), 3000)
   }
 
   return (
