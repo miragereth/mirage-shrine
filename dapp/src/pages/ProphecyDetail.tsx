@@ -69,7 +69,7 @@ const ProphecyCore: React.FC<{ prophecy: Prophecy }> = (p) => {
             >
               <div className="m-3 flex">
                 <img
-                  src="./assets/reality-icon.png"
+                  src="/assets/reality-icon.png"
                   className="h-6 w-6 hover:animate-spin"
                 />
               </div>
@@ -83,7 +83,7 @@ const ProphecyCore: React.FC<{ prophecy: Prophecy }> = (p) => {
             >
               <div className="m-3 flex">
                 <img
-                  src="./assets/etherscan.ico"
+                  src="/assets/etherscan.ico"
                   className="h-6 w-6 hover:animate-spin"
                 />
               </div>
@@ -624,7 +624,7 @@ const Ascend: React.FC<{
       {/* Arrow Icon */}
       <div className="relative m-[-18px] h-8 w-8 items-center rounded-lg border-2 border-slate-800 bg-slate-700">
         <div className="inline-flex h-full w-full items-center justify-center self-center">
-          <ReactSVG src="../assets/down-arrow.svg" />
+          <ReactSVG src="assets/down-arrow.svg" />
         </div>
       </div>
 

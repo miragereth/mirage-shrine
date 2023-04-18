@@ -60,7 +60,7 @@ const Navbar: React.FC = (p) => {
       <div className="flex flex-row items-center">
         <ReactSVG
           className="hover:animation-linear hover:animation-continue mr-2 h-8 w-8 hover:animate-spin"
-          src="../assets/yy.svg"
+          src="/assets/yy.svg"
         />
         <nav className="flex flex-row items-center">
           <NavLink
@@ -109,7 +109,7 @@ const Navbar: React.FC = (p) => {
           <a href="https://discord.gg/4mRTZKMH9s" target="_blank">
             <ReactSVG
               className="mt-1 h-6 w-6 fill-black dark:fill-white"
-              src="../assets/discord-icon.svg"
+              src="/assets/discord-icon.svg"
             />
           </a>
         </div>
