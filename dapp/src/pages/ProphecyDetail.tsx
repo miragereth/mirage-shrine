@@ -128,7 +128,18 @@ const Distill: React.FC<{ prophecy: Prophecy }> = (p) => {
   )
 
   const [amount, setAmount] = useState<string>("")
-  if (isLoading || balances === undefined) return <div>loading...</div>
+  if (isLoading) return <div>loading...</div>
+
+  if (balances === undefined)
+    return (
+      <div
+        className="h-12 w-full
+            cursor-not-allowed rounded-2xl bg-orange-100 py-[10px] px-1 text-center align-middle
+        text-lg opacity-80 dark:bg-slate-900"
+      >
+        Connect Wallet
+      </div>
+    )
 
   if (balances.essence === null) return <div>Bad token</div>
 
@@ -375,7 +386,18 @@ const Blend: React.FC<{ prophecy: Prophecy }> = (p) => {
   )
 
   const [amount, setAmount] = useState<string>("")
-  if (isLoading || balances === undefined) return <div>loading...</div>
+  if (isLoading) return <div>loading...</div>
+
+  if (balances === undefined)
+    return (
+      <div
+        className="h-12 w-full
+            cursor-not-allowed rounded-2xl bg-orange-100 py-[10px] px-1 text-center align-middle
+        text-lg opacity-80 dark:bg-slate-900"
+      >
+        Connect Wallet
+      </div>
+    )
 
   if (balances.essence === null) return <div>Bad token</div>
 
