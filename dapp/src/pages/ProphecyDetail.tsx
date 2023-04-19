@@ -34,6 +34,7 @@ import CloseIcon from "@mui/icons-material/Close"
 import LoopRoundedIcon from "@mui/icons-material/LoopRounded"
 import ScienceRoundedIcon from "@mui/icons-material/ScienceRounded"
 import CycloneIcon from "@mui/icons-material/Cyclone"
+import { CircularProgress } from "@mui/material"
 
 const ProphecyCore: React.FC<{ prophecy: Prophecy }> = (p) => {
   const emojis = [
@@ -128,7 +129,7 @@ const Distill: React.FC<{ prophecy: Prophecy }> = (p) => {
   )
 
   const [amount, setAmount] = useState<string>("")
-  if (isLoading) return <div>loading...</div>
+  if (isLoading) return <CircularProgress />
 
   if (balances === undefined)
     return (
@@ -386,7 +387,7 @@ const Blend: React.FC<{ prophecy: Prophecy }> = (p) => {
   )
 
   const [amount, setAmount] = useState<string>("")
-  if (isLoading) return <div>loading...</div>
+  if (isLoading) return <CircularProgress />
 
   if (balances === undefined)
     return (
@@ -904,11 +905,11 @@ export const ProphecyPage: React.FC = (p) => {
     getAllProphecies({ networkId: Number(chainId) as number })
   )
 
-  if (isLoading || prophecies === undefined) return <div>loading...</div>
+  if (isLoading || prophecies === undefined) return <CircularProgress />
 
   const prophecy = prophecies[id]
 
-  if (prophecy === undefined) return <div>loading...</div>
+  if (prophecy === undefined) return <CircularProgress />
 
   return (
     <div className="flex w-full flex-col items-center">
