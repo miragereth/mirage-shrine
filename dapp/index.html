@@ -14,6 +14,8 @@
       // Stop Vite from complaining about Buffer.
       import { Buffer } from "buffer"
       globalThis.Buffer = Buffer
+      // Do not flash colors to users, assume dark.
+      document.documentElement.classList.add("dark")
     </script>
     <script type="module" src="/src/index.tsx"></script>
     <div id="root"></div>
