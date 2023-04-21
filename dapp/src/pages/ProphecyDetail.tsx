@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom"
 import { useAccount, useNetwork, useSigner } from "wagmi"
 import { MirageShrineABI } from "../utils/abis"
 import { Aura, getAllProphecies, Prophecy } from "../utils/get-prophecy"
-import { yellowPages, manualExplorers, validNet } from "../utils/yellow-pages"
+import { yellowPages, manualExplorers, ValidNet } from "../utils/yellow-pages"
 import {
   CalendarFrame,
   fixAmount,
@@ -76,7 +76,7 @@ const ProphecyCore: React.FC<{ prophecy: Prophecy }> = (p) => {
               </div>
             </a>
             <a
-              href={`${manualExplorers[Number(chainId) as validNet]}/tx/${
+              href={`${manualExplorers[Number(chainId) as ValidNet]}/tx/${
                 p.prophecy.scryTxHash
               }`}
               target="_blank"

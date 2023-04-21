@@ -1,7 +1,7 @@
 import { erc20ABI, getContract, Provider } from "@wagmi/core"
 import { BigNumber, providers } from "ethers"
 import { Prophecy } from "./get-prophecy"
-import { manualProviders, validNet, yellowPages } from "./yellow-pages"
+import { manualProviders, ValidNet, yellowPages } from "./yellow-pages"
 
 export const getBalanceOf = async (p: {
   networkId: number
@@ -94,7 +94,7 @@ export const getTokenSymbol = async (p: {
 }) => {
   if (isNaN(p.networkId)) return
   const provider = new providers.JsonRpcProvider(
-    manualProviders[p.networkId as validNet]
+    manualProviders[p.networkId as ValidNet]
   )
   const essenceToken = getContract({
     address: p.token,

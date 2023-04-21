@@ -3,7 +3,7 @@ import { BigNumber, providers } from "ethers"
 import { FateABI, MirageShrineABI, RealityABI } from "./abis"
 import { getUniswapInfo, UniswapInfo } from "./get-uniswap-info"
 import { bytes23ToString } from "./rune"
-import { yellowPages, manualProviders, validNet } from "./yellow-pages"
+import { yellowPages, manualProviders, ValidNet } from "./yellow-pages"
 
 export enum Aura {
   Forthcoming,
@@ -186,7 +186,7 @@ export const getProphecy = async (p: {
 export const getAllProphecies = async (p: { networkId: number }) => {
   if (isNaN(p.networkId)) return
   const provider = new providers.JsonRpcProvider(
-    manualProviders[p.networkId as validNet]
+    manualProviders[p.networkId as ValidNet]
   )
   const shrine = getContract({
     address: yellowPages[p.networkId].shrine,
