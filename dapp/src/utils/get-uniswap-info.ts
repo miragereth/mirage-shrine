@@ -32,7 +32,7 @@ export const getUniswapInfo = async (p: {
     p.provider
   )
 
-  let dollarOfEssence: BigNumber = BigNumber.from("100000") // testing
+  let dollarOfEssence: BigNumber = BigNumber.from("1000000") // USDC has 6 decimals.
 
   if (yellowPages[p.networkId].usdReference !== p.essence.toLocaleLowerCase()) {
     try {
@@ -40,7 +40,7 @@ export const getUniswapInfo = async (p: {
         yellowPages[p.networkId].usdReference,
         p.essence,
         3000, // 0.3% v3 fee
-        BigNumber.from("10000000000000000000"),
+        BigNumber.from("1000000"),
         BigNumber.from("0")
       )
     } catch (_) {
@@ -121,37 +121,27 @@ export const getUniswapInfo = async (p: {
     yesSellPromise(),
   ])
 
+  const mul = 1000000
+
   const noBuyRatio =
     noBuy === null
       ? null
-      : BigNumber.from(dollarOfEssence)
-          .mul(BigNumber.from(10000))
-          .div(noBuy)
-          .toNumber() / 10000
+      : dollarOfEssence.mul(BigNumber.from(mul)).div(noBuy).toNumber() / mul
 
   const noSellRatio =
     noSell === null
       ? null
-      : BigNumber.from(dollarOfEssence)
-          .mul(BigNumber.from(10000))
-          .div(noSell)
-          .toNumber() / 10000
+      : dollarOfEssence.mul(BigNumber.from(mul)).div(noSell).toNumber() / mul
 
   const yesBuyRatio =
     yesBuy === null
       ? null
-      : BigNumber.from(dollarOfEssence)
-          .mul(BigNumber.from(10000))
-          .div(yesBuy)
-          .toNumber() / 10000
+      : dollarOfEssence.mul(BigNumber.from(mul)).div(yesBuy).toNumber() / mul
 
   const yesSellRatio =
     yesSell === null
       ? null
-      : BigNumber.from(dollarOfEssence)
-          .mul(BigNumber.from(10000))
-          .div(yesSell)
-          .toNumber() / 10000
+      : dollarOfEssence.mul(BigNumber.from(mul)).div(yesSell).toNumber() / mul
 
   return {
     yes: { buy: yesBuyRatio, sell: yesSellRatio },

@@ -12,11 +12,12 @@ import {
   TokenDisplay,
 } from "../components/ProphecyCard"
 import { MirageShrineABI } from "../utils/abis"
-import { getTokenSymbol } from "../utils/get-balance"
 import { randomRune } from "../utils/rune"
 import {
+  HardcodedEssenceSymbol,
+  ValidNet,
+  manualEssences,
   manualNativeTokens,
-  validNet,
   yellowPages,
 } from "../utils/yellow-pages"
 import { AutoExpandingTextarea } from "./Auto"
@@ -34,20 +35,10 @@ const NewScryForm: React.FC<{
   setDay: Setter
   inquiry: string
   setInquiry: Setter
+  essenceSymbol: string
+  setEssenceSymbol: Setter
+  chainId: ValidNet
 }> = (p) => {
-  const { chainId } = useParams()
-  const { data: symbol } = useSWR(
-    `${chainId}:symbol/${
-      yellowPages[Number(chainId) as number].defaultEssence
-    }`,
-    () =>
-      getTokenSymbol({
-        //provider,
-        networkId: Number(chainId),
-        token: yellowPages[Number(chainId) as number]
-          .defaultEssence as `0x${string}`,
-      })
-  )
   return (
     <div className="flex flex-col rounded-2xl bg-orange-200 dark:bg-slate-800">
       <div className="p-4">
@@ -109,9 +100,22 @@ const NewScryForm: React.FC<{
           </div>
           <div className="flex w-32 flex-col items-center py-3">
             <div className="py-1">Essence</div>
-            {/* <div className="text-xs">Underlying redeemption</div> */}
-            <div className="flex w-20 items-center justify-evenly rounded-2xl bg-white p-1 dark:bg-black">
-              <span className="text-base font-bold ">{symbol || "..."}</span>
+            <div className="flex w-20 items-center justify-evenly bg-transparent p-2 ">
+              <select
+                className="rounded-2xl bg-white p-1 text-center text-lg font-bold dark:bg-black"
+                value={p.essenceSymbol}
+                onChange={(e) => {
+                  p.setEssenceSymbol(e.target.value)
+                }}
+              >
+                {Object.keys(manualEssences[p.chainId]).map((k) => {
+                  return (
+                    <option value={k} key={k}>
+                      {k}
+                    </option>
+                  )
+                })}
+              </select>
             </div>
           </div>
         </div>
@@ -133,6 +137,7 @@ const NewScryForm: React.FC<{
 const ProphecyPreview: React.FC<{
   horizon: Date
   inquiry: string
+  essenceSymbol: string
 }> = (p) => {
   return (
     <div className="w-fit">
@@ -148,7 +153,7 @@ const ProphecyPreview: React.FC<{
           <TokenDisplay
             decimals={18}
             supply={BigNumber.from("1000000000000000000")}
-            symbol={"WMATIC"}
+            symbol={p.essenceSymbol}
             small
           />
           <OddsDisplay
@@ -186,10 +191,18 @@ export const ScryPage: React.FC = () => {
     })
   )
 
-  // In this first version, no way to choose Essence.
-  // This speeds up development.
-  const essence = yellowPages[Number(chainId) as number].defaultEssence
+  // No token picker, choose among a curated selection of essences.
+  const [essenceSymbol, setEssenceSymbol] = useState<string>("WETH")
+  useEffect(() => {
+    if (typeof chainId === "string") {
+      setEssenceSymbol(yellowPages[Number(chainId) as number].defaultEssence)
+    }
+  }, [chainId])
+
   const [inquiry, setInquiry] = useState<string>("")
+
+  if (chainId === undefined) return null
+
   const horizon = new Date(Number(year), Number(month) - 1, Number(day))
 
   const scry = async () => {
@@ -201,9 +214,13 @@ export const ScryPage: React.FC = () => {
       signerOrProvider: signer as Signer,
     })
 
+    const essence =
+      manualEssences[network.chain?.id as ValidNet][
+        essenceSymbol as HardcodedEssenceSymbol
+      ]
     const tx = await shrine.scry(
       horizon.getTime() / 1000,
-      essence as `0x${string}`,
+      essence,
       rune as `0x${string}`,
       inquiry,
       {
@@ -277,10 +294,17 @@ export const ScryPage: React.FC = () => {
         setDay={setDay}
         inquiry={inquiry}
         setInquiry={setInquiry}
+        essenceSymbol={essenceSymbol}
+        setEssenceSymbol={setEssenceSymbol}
+        chainId={Number(chainId) as ValidNet}
       />
       <div className="flex flex-col items-center py-4">
         <div className="py-2">Preview</div>
-        <ProphecyPreview horizon={horizon} inquiry={inquiry} />
+        <ProphecyPreview
+          horizon={horizon}
+          inquiry={inquiry}
+          essenceSymbol={essenceSymbol}
+        />
       </div>
       <div className="flex flex-col rounded-3xl bg-orange-300 p-5 dark:bg-slate-800">
         {/* One must apologize for the following logical entanglement */}
@@ -314,7 +338,7 @@ export const ScryPage: React.FC = () => {
               BigNumber.from(yellowPages[Number(chainId) as number].tribute),
               18
             )}{" "}
-            {manualNativeTokens[Number(chainId) as validNet]}
+            {manualNativeTokens[Number(chainId) as ValidNet]}
           </b>{" "}
           to the Mirage Shrine.
         </p>

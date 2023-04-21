@@ -4,7 +4,7 @@ interface YellowPage {
   uniswapV3: `0x${string}`
   uniswapQuoter: `0x${string}`
   usdReference: `0x${string}`
-  defaultEssence: `0x${string}`
+  defaultEssence: string // Symbol key of default essence.
   tribute: string
 }
 
@@ -41,8 +41,8 @@ export const yellowPages: { [network: number]: YellowPage } = {
     reality: "0x60573b8dce539ae5bf9ad7932310668997ef0428",
     uniswapV3: "0x",
     uniswapQuoter: "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6",
-    usdReference: "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
-    defaultEssence: "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+    usdReference: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+    defaultEssence: "WETH",
     tribute: "1000000000000000000",
   },
   42161: {
@@ -56,7 +56,7 @@ export const yellowPages: { [network: number]: YellowPage } = {
   },
 } as const
 
-export type validNet = 5 | 10 | 100 | 137 | 421611
+export type ValidNet = 137
 export const manualProviders = {
   5: `https://goerli.infura.io/v3/${import.meta.env.VITE_INFURA_KEY}`,
   10: `https://optimism-mainnet.infura.io/v3/${
@@ -85,4 +85,16 @@ export const manualNativeTokens = {
   100: "xDAI",
   137: "MATIC",
   421611: "ETH",
+} as const
+
+export type HardcodedEssenceSymbol = "WMATIC" | "USDC" | "USDT" | "DAI" | "WETH"
+
+export const manualEssences = {
+  137: {
+    WMATIC: "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+    USDC: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+    USDT: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+    DAI: "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+    WETH: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+  },
 } as const
