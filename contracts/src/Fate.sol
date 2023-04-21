@@ -96,7 +96,7 @@ contract Fate is IERC20Metadata {
     // NO Lemon Fate
     function name() public view returns(string memory) {
         return string(abi.encodePacked(
-            info.yes ? "YES" : "NO",
+            info.yes ? "YES " : "NO ",
             Stringer.bytes23ToString(info.rune),
             " Fate"
         ));
