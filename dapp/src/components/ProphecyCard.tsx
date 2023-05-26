@@ -161,7 +161,7 @@ export const OddsDisplay: React.FC<{
       ? `${parseOdd(p.uniswapInfo.no.sell as number)}%*`
       : p.uniswapInfo.no.sell === null
       ? `${parseOdd(p.uniswapInfo.no.buy as number)}%*`
-      : `${parseOdd(p.uniswapInfo.no.buy + p.uniswapInfo.no.sell / 2)}%`
+      : `${parseOdd((p.uniswapInfo.no.buy + p.uniswapInfo.no.sell) / 2)}%`
 
   const yes =
     p.uniswapInfo.yes.buy === null && p.uniswapInfo.yes.sell === null
@@ -170,7 +170,7 @@ export const OddsDisplay: React.FC<{
       ? `${parseOdd(p.uniswapInfo.yes.sell as number)}%*`
       : p.uniswapInfo.yes.sell === null
       ? `${parseOdd(p.uniswapInfo.yes.buy as number)}%*`
-      : `${parseOdd(p.uniswapInfo.yes.buy + p.uniswapInfo.yes.sell / 2)}%`
+      : `${parseOdd((p.uniswapInfo.yes.buy + p.uniswapInfo.yes.sell) / 2)}%`
 
   return (
     <div className="flex justify-center">
