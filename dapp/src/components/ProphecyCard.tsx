@@ -8,6 +8,17 @@ import CoronavirusIcon from "@mui/icons-material/Coronavirus"
 import CheckIcon from "@mui/icons-material/Check"
 import CloseIcon from "@mui/icons-material/Close"
 
+const compactor = new Intl.NumberFormat(
+  // currently we are using only english number formatting because other
+  // languages can result in very different string length, which we need to deal with.
+  // (en: 10.2k, de: 10.200)
+  "en", // currentLocale.value,
+  {
+    notation: "compact",
+    compactDisplay: "short",
+  }
+)
+
 export const CalendarFrame: React.FC<{ horizon: Date }> = (p) => {
   const months = [
     "Jan",
@@ -55,7 +66,7 @@ export const Inquiry: React.FC<{ inquiry: string; short: boolean }> = (p) => {
         <div className="grow" />
       </div>
       <blockquote
-        className={`w-60 italic break-words ${
+        className={`w-60 break-words italic ${
           p.inquiry !== "" ? "text-justify" : "text-center"
         } text-${p.short ? "sm" : "base"}`}
       >
@@ -90,8 +101,12 @@ export const TokenDisplay: React.FC<{
   }
 
   const fixedAmount = fixAmount(p.supply, p.decimals)
+
+  const compacted = compactor.format(Number(fixedAmount))
+  // For big amounts, the numbers are shown compacted
+  // For tiny numbers, check if they're below threshold
   // Do not bombard their attention with worthless amounts
-  const shown = Number(fixedAmount) < 0.01 ? "~" : fixedAmount.substring(0, 4)
+  const shown = Number(fixedAmount) < 0.01 ? "~" : compacted
   const concatEssence = p.symbol.substring(0, 4)
   return (
     <div className="flex flex-row items-center justify-between rounded-2xl bg-orange-100 pl-1 dark:bg-slate-900">
