@@ -5,6 +5,14 @@ import { getUniswapInfo, UniswapInfo } from "./get-uniswap-info"
 import { bytes23ToString } from "./rune"
 import { yellowPages, manualProviders, ValidNet } from "./yellow-pages"
 
+const randomBetween = (min: number, max: number) =>
+  Math.floor(min + Math.random() * (max - min))
+
+export const sleep = (seconds = 0.5): Promise<void> => {
+  if (seconds === 0) seconds = randomBetween(2, 5)
+  return new Promise((resolve) => setTimeout(resolve, seconds * 1000))
+}
+
 export enum Aura {
   Forthcoming,
   Blighted,
@@ -79,6 +87,10 @@ export const getProphecy = async (p: {
       ]
     })
 
+  const [scryTxHash, inquiry, createdAt] = await inquiryPromise
+
+  await sleep()
+
   const inquiryResultPromise = async () => {
     let result
     try {
@@ -89,7 +101,13 @@ export const getProphecy = async (p: {
     return result
   }
 
-  const runeBytesPromise = fate.info().then((info) => info[0])
+  const inquiryResult = await inquiryResultPromise()
+
+  await sleep()
+
+  //const runeBytes = await fate.info().then((info) => info[0])
+
+  await sleep()
 
   const essenceToken = getContract({
     address: got.essence,
@@ -106,41 +124,41 @@ export const getProphecy = async (p: {
     }
     return result
   }
-  const essenceDecimalsPromise = async () => {
-    let result = null
-    try {
-      result = await essenceToken.decimals()
-    } catch (e) {
-      console.log("Not a token", { prophecy: got })
-    }
-    return result
+  const essenceSymbol = await essenceSymbolPromise()
+  await sleep()
+
+  // const essenceDecimalsPromise = async () => {
+  //   let result = null
+  //   try {
+  //     result = await essenceToken.decimals()
+  //   } catch (e) {
+  //     console.log("Not a token", { prophecy: got })
+  //   }
+  //   return result
+  // }
+
+  //const essenceDecimals = await essenceDecimalsPromise()
+  //await sleep()
+
+  // const uniswapInfoPromise = getUniswapInfo({
+  //   essence: got.essence,
+  //   yes: got.yes,
+  //   no: got.no,
+  //   networkId: p.networkId,
+  //   provider: p.provider,
+  // })
+
+  // const uniswapInfo = await uniswapInfoPromise
+  //await sleep()
+
+  const uniswapInfo = {
+    yes: { buy: null, sell: null },
+    no: { buy: null, sell: null },
   }
 
-  const uniswapInfoPromise = getUniswapInfo({
-    essence: got.essence,
-    yes: got.yes,
-    no: got.no,
-    networkId: p.networkId,
-    provider: p.provider,
-  })
+  await sleep()
 
-  const [
-    [scryTxHash, inquiry, createdAt],
-    runeBytes,
-    essenceSymbol,
-    essenceDecimals,
-    uniswapInfo,
-    inquiryResult,
-  ] = await Promise.all([
-    inquiryPromise,
-    runeBytesPromise,
-    essenceSymbolPromise(),
-    essenceDecimalsPromise(),
-    uniswapInfoPromise,
-    inquiryResultPromise(),
-  ])
-
-  const rune = bytes23ToString(runeBytes)
+  //const rune = bytes23ToString(runeBytes)
 
   let aura = [Aura.Forthcoming, Aura.Blighted, Aura.Fulfilled, Aura.Mirage][
     got.aura
@@ -165,10 +183,10 @@ export const getProphecy = async (p: {
   const prophecy: Prophecy = {
     prophecyId: p.prophecyId,
     scryTxHash,
-    rune: rune,
+    rune: "",
     essence: got.essence,
     essenceSymbol,
-    essenceDecimals,
+    essenceDecimals: 18, // assume this so that it loads faster
     horizon: new Date(got.horizon * 1000),
     createdAt: new Date(createdAt.toNumber() * 1000),
     aura: aura,
@@ -195,8 +213,10 @@ export const getAllProphecies = async (p: { networkId: number }) => {
   })
   const prophecyCount = await shrine.count()
 
+  await sleep()
   const prophecyPromises = []
   for (let i = 0; i < prophecyCount.toNumber(); i++) {
+    await sleep()
     prophecyPromises.push(
       getProphecy({
         prophecyId: i,
